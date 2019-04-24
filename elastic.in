@@ -6,8 +6,8 @@ NAMELIST
  	 chans=1 smats=2  xstabl=1 
 	 elab(1:3)=30.14 55 0  nlab(1:3)=1 1 /
 
- &PARTITION namep='p' massp=1.00 zp=1 
- 	    namet='Ni78' masst=78.0000 zt=28 qval=-0.000 nex=1  /
+ &PARTITION namep='11Be' massp=11.021661 zp=4 
+ 	    namet='9Be' masst=9.012183 zt=4 qval=-0.000 nex=1  /
  &STATES jp=0.5 bandp=1 ep=0.0000 cpot=1 jt=0.0 bandt=1 et=0.0000  /
  &partition /
  
