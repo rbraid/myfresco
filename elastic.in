@@ -1,4 +1,4 @@
-p+Ni78 Coulomb and Nuclear;                                                                
+11Be on 9Be elastic scattering at 30.14 MeV
 NAMELIST
  &FRESCO hcm=0.1 rmatch=60 
 	 jtmin=0.0 jtmax=50 absend= 0.0010 
