@@ -11,7 +11,7 @@ NAMELIST
  &STATES jp=0.5 bandp=1 ep=0.0000 cpot=1 jt=1.5 bandt=-1 et=0.0000  /
  &partition /
  
- &POT kp=1 ap=1.000 at=78.000 rc=1.2  /
+ &POT kp=1 ap=11.021661 at=9.012183 rc=1.2  /
  &POT kp=1 type=1 p1=40.00 p2=1.2 p3=0.65 p4=10.0 p5=1.2 p6=0.500  /
  &pot / 
  &overlap / 
