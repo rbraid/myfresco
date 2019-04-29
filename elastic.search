@@ -1,0 +1,13 @@
+'elastic.in' 'elastic.frout'
+3 1
+ &variable kind=1 name='V' kp=1 pline=2 col=1 potential=40 step=.1/
+ &variable kind=1 name='r0' kp=1 pline=2 col=2 potential=1.2 step=.01/
+ &variable kind=1 name='d' kp=1 pline=2 col=3 potential=.65 step=.01/
+ &data iscale=-1 idir=0 lab=f abserr=T/
+ 35.4060662343  1.0  0.0425677669591
+ 41.0833231697  0.379998737331  0.0164825209119
+ 45.610451663  0.200934590313  0.00902500271638
+ 49.3262692228  0.087625984214  0.00418803029722
+ 53.3538533382  0.0383857343144  0.00208735852288
+ 57.4454755428  0.043975512575  0.00263191666774
+&
