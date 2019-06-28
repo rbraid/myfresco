@@ -1,0 +1,6 @@
+elastic.search
+min
+migrand
+end
+plot elastic.plot
+exit
