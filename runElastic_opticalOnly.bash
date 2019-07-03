@@ -27,11 +27,17 @@ tput setaf 2
 echo -e "Beinning to run sfresco"
 tput sgr0
 sfresco < sfrescoCommands_opticalOnly.txt
+echo
+echo
 tput setaf 2
 echo -e "Beinning to convert sfresco output to ROOT"
 tput sgr0
 python ../utils/slimgrace2root.py elastic_opticalOnly.plot elastic_opticalOnly_after.root
 echo
 
-root -l elastic_opticalOnly_after.root
-
+# root -l elastic_opticalOnly_after.root
+tput setaf 2
+echo -e "Generating nice png"
+tput sgr0
+python ../utils/plotter.py
+echo
