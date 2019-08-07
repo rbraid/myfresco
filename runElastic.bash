@@ -96,6 +96,18 @@ python ../utils/slimgrace2root.py elastic_opticalOnly.plot elastic_opticalOnly_a
 fi
 echo
 
+tput setaf 2
+echo -e "Beinning to make a blurred version of the sfresco fit"
+tput sgr0
+if [ $MODE == "FULL" ] 
+then
+python ../utils/frescoblur.py elastic_after.root blurred_after.root
+elif [ $MODE == "OPTICAL" ] 
+then
+python ../utils/frescoblur.py elastic_opticalOnly_after.root blurred_opticalOnly_after.root
+fi
+echo
+
 
 tput setaf 2
 echo -e "Generating nice png"
