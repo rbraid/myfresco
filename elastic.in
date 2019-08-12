@@ -18,12 +18,9 @@ NAMELIST
  &POT kp=1 ap=11.021661 at=9.012183 rc=1.2  /
  &POT kp=1 type=1  shape=0  p1=94 p2=1.2 
 	 p3=.6 p4=20 p5=1.5 p6=.2  /
+ &POT kp=1 type=3 p1=6.00  p2=1.2 p3=0.6   / 
  &pot / 
  
  &overlap / 
  
  &coupling / 
- 
-Output code for fresco input written by xfresco version 2.1
- at Wed May 15 14:34:31 2019
- 
