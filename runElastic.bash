@@ -1,7 +1,10 @@
 #!/bin/bash
 MODE="DEFAULT"
-# if [[ $@ = "full" || $@ = "Full" || $@ = "FULL"]] then
-if [ $@ == "full" ] || [ $@ == "Full" ] || [ $@ == "FULL" ] 
+if [ $# -eq 0 ]
+then
+  echo "Using Full as default"
+  MODE="FULL"
+elif [ $@ == "full" ] || [ $@ == "Full" ] || [ $@ == "FULL" ] 
 then
   echo "Full Mode Active"
   MODE="FULL"
