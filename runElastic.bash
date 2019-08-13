@@ -42,10 +42,10 @@ echo -e "Beinning to convert Fresco output to ROOT output"
 tput sgr0
 if [ $MODE == "FULL" ] 
 then
-python ../utils/out2root.py elastic.out elastic_before.root
+python ../utils/slimgrace2root.py fort.16 elastic_before.root
 elif [ $MODE == "OPTICAL" ] 
 then
-python ../utils/out2root.py elastic_opticalOnly.out elastic_opticalOnly_before.root
+python ../utils/slimgrace2root.py fort.16 elastic_opticalOnly_before.root
 fi
 
 tput setaf 2
