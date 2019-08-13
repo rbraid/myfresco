@@ -1,26 +1,26 @@
 11Be on 9Be elastic scattering at 30.14 MeV
 NAMELIST
- &FRESCO hcm=0.1 rmatch=60 jtmin=0.0 
-	 jtmax=50 absend=0.0010 thmin=10.00 
-	 thmax=180.00 thinc=1.00 chans=1 
-	 smats=2  xstabl=1 
-	 elab(1:1)= 30.14 nlab(1:1)= 1
-	  /
+ &FRESCO hcm=0.1 rmatch=60 rintp=0.20 hnl=0.1 rnl=7.00 centre=0.0
+	 jtmin=0.0 jtmax=20 absend=0.0010
+	 thmin=0.00 thmax=-180.00 thinc=1.00 
+	 iter=2 iblock=0 nnu=36
+ 	 chans=1 xstabl=1 listcc=2 TRENEG=0 smats=2
+	 elab= 30.14 lin = 1  /
 
- &PARTITION namep='11Be' massp=11.021661 zp=4 
-	 namet='9Be' masst=9.012183 zt=4 qval=-0.000 
-	 nex=1  /
- &STATES jp=0.5 bandp=1 cpot=1 jt=1.5 
-	 bandt=-1  /
+&PARTITION namep='11Be' massp=11.021661 zp=4
+           namet='9Be' masst=9.012183 zt=4 nex=2 qval=0.0 /
+&STATES jp=0.5 bandp=1 ep=0 cpot=1 jt=0.5 bandt=1 et=0 /
+&STATES jp=0.5 bandp=-1 ep=0.320 cpot=1 copyt=1 /
+&partition /
 
- &partition /
- 
- &POT kp=1 ap=11.021661 at=9.012183 rc=1.2  /
- &POT kp=1 type=1  shape=0  p1=94 p2=1.2 
-	 p3=.6 p4=20 p5=1.5 p6=.2  /
- &POT kp=1 type=3 p1=6.00  p2=1.2 p3=0.6   / 
- &pot / 
- 
- &overlap / 
- 
- &coupling / 
+&POT kp=1 type=0 shape=0 ap=11.021661 at=9.012183 rc=1.2  /
+&POT kp=1 type=1 p1=38.53 p=1.27 p3=.56 p4=6.25 p5=1.31 p6=.5  /
+&POT kp=1 type=3 p1=6.47  p2=1.16 p3=0.51   / 
+&POT kp=1 type=10 itt=F p1=1.67 p2=2.5/
+&POT kp=1 type=2 p(1:6)= 0.0 0.0 0.0 6.8 1.29 0.71  /
+&POT kp=1 type=10 itt=F p1=1.67 p2=2.5/
+&pot /
+
+&overlap /
+
+&coupling /
