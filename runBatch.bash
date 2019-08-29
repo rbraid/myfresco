@@ -49,6 +49,9 @@ echo -e "Moving fit data to csv"
 tput sgr0
 python ../utils/parseMINUIT.py ../outputs/par*.par
 
+rm *trace
+rm *snap
+
 tput setaf 2
 echo -e "All done."
 tput sgr0
