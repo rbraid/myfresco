@@ -105,16 +105,11 @@ elastic_$1_$2_$3_$4_$5_$6_$7.search
 fix 1
 fix 3
 fix 6
-fix 8
-fix 9
-fix 10
-fix 11
-fix 12
-fix 13
 
 min
 migrand
 end
+
 plot elastic_$1_$2_$3_$4_$5_$6_$7.plot
 exit
 EOF
