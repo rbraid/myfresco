@@ -1,4 +1,4 @@
-Be11(p,d)be10 @ 109.23 MeV Ex0;
+Be11(Be9,Be10)Be10 @ 30.14 MeV Ex0;
 NAMELIST
  &FRESCO hcm=0.1 rmatch=60 rintp=0.20 hnl=0.1 rnl=7.00 centre=0.0
 	 jtmin=0.0 jtmax=20 absend=0.0010
@@ -8,12 +8,12 @@ NAMELIST
 	 elab= 109.23 lin = 1  /
 
 
-&PARTITION namep='be11' massp=11.0 zp=4 namet='proton' masst=1.0 zt=1 nex=3 qval=0.0 /
+&PARTITION namep='be11' massp=11.0 zp=4 namet='be9' masst=9.0 zt=4 nex=3 qval=0.0 /
 &STATES jp=0.5 bandp=1 ep=0 cpot=1 jt=0.5 bandt=1 et=0 /
 &STATES jp=0.5 bandp=-1 ep=0.320 cpot=1 copyt=1 /
 &STATES jp=2.5 bandp=1 ep=1.783 cpot=1 copyt=1 /
 
-&PARTITION namep='be10' massp=10.0 zp=4 namet='deuteron' masst=2.0 zt=1 nex=4 qval=1.722 /
+&PARTITION namep='be10A' massp=10.0 zp=4 namet='be10B' masst=10 zt=4 nex=4 qval=1.722 /
 &STATES jp=0 bandp=1 ep=0      cpot=2 jt=1 bandt=1 et=0 /
 &STATES jp=2 bandp=1 ep=5.95839  cpot=2 copyt=1 /
 &STATES jp=1 bandp=-1 ep=5.9599  cpot=2 copyt=1 /
