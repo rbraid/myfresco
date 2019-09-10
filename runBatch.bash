@@ -33,11 +33,10 @@ tput setaf 2
 echo -e "Beginning to run the parallel sfresco fits for different parameters"
 tput sgr0
 
-nice -n 19  parallel --tmpdir ~/nuclear/mine/fresco/outputs --files --bar --shuf bash runElastic.bash ::: 1.1 1.3 ::: 40 50 60 70 ::: 1.1 1.3 ::: .25 1 ::: 3 9 ::: 1.1 1.3 ::: .25 1
+nice -n 19 parallel --tmpdir ~/nuclear/mine/fresco/outputs --files --bar --shuf bash runElastic.bash ::: 1. 1.2 ::: 15 50 100 150 200 ::: .7 .8 .9 1. 1.1 1.2 1.3 ::: .5 .6 .7 .8 ::: 6 ::: 1.3 ::: .5
 
-# nice -n 19 parallel --tmpdir ~/nuclear/mine/fresco/outputs --files --bar --shuf bash runElastic.bash ::: 1.1 1.3 ::: 40 120 ::: 1.1 1.3 ::: .5 ::: 3 12 ::: 1.2 ::: .5
-
-# nice -n 19 parallel --tmpdir ~/nuclear/mine/fresco/outputs --files --bar --shuf bash runElastic.bash ::: 1.2 ::: 50 ::: 1.2 ::: .5 ::: 6 ::: 1.2 ::: .5
+rm *trace
+rm *snap
 
 tput setaf 2
 echo -e "Creating Nice Plots"
@@ -49,8 +48,10 @@ echo -e "Moving fit data to csv"
 tput sgr0
 python ../utils/parseMINUIT.py ../outputs/par*.par
 
-rm *trace
-rm *snap
+tput setaf 2
+echo -e "Making Pairplot from csv"
+tput sgr0
+python ../utils/checkCorrelations.py 
 
 tput setaf 2
 echo -e "All done."
