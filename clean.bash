@@ -10,3 +10,5 @@ rm --f *.out
 rm --f *.plot
 rm --f *.search
 rm --f minuit-saved.dat
+
+rm --f -r ../outputs/tmpDir*
