@@ -1,5 +1,7 @@
 #!/bin/bash
 MODE="DEFAULT"
+UTILDIR="/home/ryan/nuclear/mine/fresco/utils"
+ANGDIR="/home/ryan/nuclear/mine/rb/angulardistribution"
 
 if [ $# -eq 0 ]
 then
@@ -57,10 +59,10 @@ then
   tput sgr0
   if [ $MODE == "FULL" ] 
   then
-  python ../utils/slimgrace2root.py fort.16 elastic_before.root
+  python $UTILDIR/slimgrace2root.py fort.16 elastic_before.root
   elif [ $MODE == "OPTICAL" ] 
   then
-  python ../utils/slimgrace2root.py fort.16 elastic_opticalOnly_before.root
+  python $UTILDIR/slimgrace2root.py fort.16 elastic_opticalOnly_before.root
   fi
 
   tput setaf 2
@@ -68,10 +70,10 @@ then
   tput sgr0
   if [ $MODE == "FULL" ] 
   then
-  python ../utils/calcNorm.py elastic_before.root ../../rb/angulardistribution/angOutReal.root elastic_norm.root
+  python $UTILDIR/calcNorm.py elastic_before.root ~/nuclear/mine/rb/angulardistribution/angOutReal.root elastic_norm.root
   elif [ $MODE == "OPTICAL" ] 
   then
-  python ../utils/calcNorm.py elastic_opticalOnly_before.root ../../rb/angulardistribution/angOutReal.root elastic_opticalOnly_norm.root
+  python $UTILDIR/calcNorm.py elastic_opticalOnly_before.root ~/nuclear/mine/rb/angulardistribution/angOutReal.root elastic_opticalOnly_norm.root
   fi
 fi
 
@@ -80,13 +82,13 @@ echo -e "Beinning to convert angular distribution to the search file for sfresco
 tput sgr0
 if [ $MODE == "FULL" ] 
 then
-python ../utils/angdist2fresco.py ../../rb/angulardistribution/angOutReal.root elastic.search
+python $UTILDIR/angdist2fresco.py $ANGDIR/angOutReal.root elastic.search
 elif [ $MODE == "OPTICAL" ] 
 then
-python ../utils/angdist2fresco.py ../../rb/angulardistribution/angOutReal.root elastic_opticalOnly.search
+python $UTILDIR/angdist2fresco.py $ANGDIR/angOutReal.root elastic_opticalOnly.search
 elif [ $MODE == "PARAM" ]
 then
-python ../utils/angdist2fresco.py ../../rb/angulardistribution/angOutReal.root elastic_$1_$2_$3_$4_$5_$6_$7.search $1 $2 $3 $4 $5 $6 $7
+python $UTILDIR/angdist2fresco.py $ANGDIR/angOutReal.root elastic_$1_$2_$3_$4_$5_$6_$7.search $1 $2 $3 $4 $5 $6 $7
 fi
 
 tput setaf 2
@@ -103,8 +105,6 @@ then
 sfresco <<EOF
 elastic_$1_$2_$3_$4_$5_$6_$7.search
 fix 1
-fix 3
-fix 6
 
 min
 migrand
@@ -122,15 +122,20 @@ echo -e "Beinning to convert sfresco output to ROOT"
 tput sgr0
 if [ $MODE == "FULL" ] 
 then
-python ../utils/slimgrace2root.py elastic.plot elastic_after.root
+python $UTILDIR/slimgrace2root.py elastic.plot elastic_after.root
 elif [ $MODE == "OPTICAL" ] 
 then
-python ../utils/slimgrace2root.py elastic_opticalOnly.plot elastic_opticalOnly_after.root
+python $UTILDIR/slimgrace2root.py elastic_opticalOnly.plot elastic_opticalOnly_after.root
 elif [ $MODE == "PARAM" ]
 then
-python ../utils/slimgrace2root.py elastic_$1_$2_$3_$4_$5_$6_$7.plot elastic_after_$1_$2_$3_$4_$5_$6_$7.root
+python $UTILDIR/slimgrace2root.py elastic_$1_$2_$3_$4_$5_$6_$7.plot elastic_after_$1_$2_$3_$4_$5_$6_$7.root
 fi
 echo
+
+if [ $MODE == "PARAM" ] 
+then
+cp elastic_after_$1_$2_$3_$4_$5_$6_$7.root afters/
+fi
 
 
 if [ $MODE == "FULL" ] 
@@ -138,13 +143,13 @@ then
 tput setaf 2
 echo -e "Beinning to make a blurred version of the sfresco fit"
 tput sgr0
-python ../utils/frescoblur.py elastic_after.root blurred_after.root
+python $UTILDIR/frescoblur.py elastic_after.root blurred_after.root
 elif [ $MODE == "OPTICAL" ] 
 then
 tput setaf 2
 echo -e "Beinning to make a blurred version of the sfresco fit"
 tput sgr0
-python ../utils/frescoblur.py elastic_opticalOnly_after.root blurred_opticalOnly_after.root
+python $UTILDIR/frescoblur.py elastic_opticalOnly_after.root blurred_opticalOnly_after.root
 fi
 echo
 
@@ -155,15 +160,25 @@ then
 tput setaf 2
 echo -e "Generating nice png"
 tput sgr0
-python ../utils/plotter.py full
+python $UTILDIR/plotter.py full
 elif [ $MODE == "OPTICAL" ] 
 then
 tput setaf 2
 echo -e "Generating nice png"
 tput sgr0
-python ../utils/plotter.py optical
+python $UTILDIR/plotter.py optical
 elif [ $MODE == "PARAM" ]
 then
-python ../utils/plotter.py param $1_$2_$3_$4_$5_$6_$7
+python $UTILDIR/plotter.py param $1_$2_$3_$4_$5_$6_$7
+TMPDIR="/home/ryan/nuclear/mine/outputs/tmpDir_$1_$2_$3_$4_$5_$6_$7"
+mkdir $TMPDIR
+
+mv *$1_$2_$3_$4_$5_$6_$7* $TMPDIR
+mv *frout* $TMPDIR
+mv *.plot $TMPDIR
+mv *.search $TMPDIR
 fi
 echo
+
+
+
