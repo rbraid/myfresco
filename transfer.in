@@ -2,81 +2,109 @@ Be11(Be9,Be10)Be10 @ 30.14 MeV Ex0;
 NAMELIST
  &FRESCO hcm=0.1 rmatch=60 rintp=0.20 hnl=0.1 rnl=7.00 centre=0.0
 	 jtmin=0.0 jtmax=20 absend=0.0010
-	 thmin=0.00 thmax=-180.00 thinc=1.00
+	 thmin=5.00 thmax=-180.00 thinc=1.00
 	 iter=2 iblock=0 nnu=36
  	 chans=1 xstabl=1 listcc=2 TRENEG=0 smats=2
 	 elab= 30.14 lin = 1  /
 #The above block is copied from Keri Kuhn's Be11(p,d)Be10 at 109 MeV, aside from adjustments due to the different reaction and energy
+#rintp value seems to throw a warning right now: "Accuracy analysis at    30.140 MeV in ch.  4:  Elastic h*k = 0.218 so NOT OK   compared with 0.200"
 
-&PARTITION namep='be11' massp=11.0 zp=4 namet='be9' masst=9.0 zt=4 nex=1 qval=0.0 /
+#What how do I insert comments properly into this file?  When I had the states declarations reversed, I.E. GS&GS then GS&Excite1 rather than what is seen below, they would still get read in spite of the pound symbol.
+&PARTITION namep='11Be' massp=11.0 zp=4 namet='9Be' masst=9.0 zt=4 nex=3 qval=0.0 /
 &STATES jp=0.5 bandp= 1 ep=0     cpot=1 jt=1.5 bandt=-1 et=0 /    #GS and GS
-#For minimum working example, I disable all other states but the ground state for now.
 
-#&STATES jp=0.5 bandp=-1 ep=0.320 cpot=1 copyt=1 /                 #Excite1 and GS
-#&STATES jp=2.5 bandp= 1 ep=1.783 cpot=1 copyt=1 /                 #Excite2 and GS
+&STATES jp=0.5 bandp=-1 ep=0.320 cpot=1 copyt=1 /                 #Excite1 and GS
+&STATES jp=2.5 bandp= 1 ep=1.783 cpot=1 copyt=1 /                 #Excite2 and GS
 
+#Neutron transfer comes from 11Be, so that is the one that would have one or two step transfer process through ground or excited states of 11Be into 9Be ground state.  This is why we disable 9Be excitations. FOR NOW
 #&STATES jp=0.5 bandp= 1 ep=0     cpot=1 jt=0.5 bandt= 1 et=1.684/ #GS and Excite1
 #&STATES copyp=1                  cpot=1 jt=2.5 bandt=-1 et=2.429/ #GS and Excite2
+
 #I do not model any channels with two excitations.  Since the beam and target are both initially in the ground state, this seems excessive.
 
 
-&PARTITION namep='be10BeamLike' massp=10.0 zp=4 namet='be10TargetLike' masst=10 zt=4 nex=2 qval=6.310 /
+&PARTITION namep='10Be_BeamLike' massp=10.0 zp=4 namet='10Be_TargetLike' masst=10 zt=4 nex=4 qval=6.31 /
 &STATES jp=0 bandp= 1 ep=0       cpot=2 jt=0 bandt= 1 et=0 / #GS and GS
 
-#I am assuming that the Beam-like is left in the ground state.
+&STATES copyp = 1                cpot=2 jt=2 bandt= 1 et=5.958 / #GS and 5958
+&STATES copyp = 1                cpot=2 jt=1 bandt=-1 et=5.959 / #GS and 5959
+&STATES copyp = 1                cpot=2 jt=2 bandt=-1 et=6.263 / #GS and 6263
+
+#I am assuming that the Beam-like is left in the ground state.  We see the excitation is most often carried in the target-like from the data.  In principle it would be nice to use FRESCO to calculate the cross sections for both possibilities.  This is actually an interesting problem, since transferring the 2s1/2 gives beam-like in ground state and target-like excited.  However, transferring the 1p3/2 gives the opposite configuration!
 #&STATES jp=2 bandp= 1 ep=5.958   cpot=2 copyt=1 / #5958 2+ and GS
 #&STATES jp=1 bandp=-1 ep=5.959   cpot=2 copyt=1 / #5959 1- and GS
 #&STATES jp=2 bandp=-1 ep=6.263   cpot=2 copyt=1 / #6263 2- and GS
-
-#Minimum working example only has the state of primary interest.
-
-#&STATES jp=0 bandp= 1 ep=0       cpot=2 jt=2 bandt= 1 et=5.958 / #GS and 5958
-&STATES  jp=0 bandp= 1 ep=0       cpot=2 jt=1 bandt=-1 et=5.959 / #GS and 5959
-#&STATES copyp = 1                cpot=2 jt=2 bandt=-1 et=6.263 / #GS and 6263
 &partition /
 #The 3368 keV 2+ state is not modeled because it is not a single-particle state.
 
-# incoming scattering 11Be+9Be (kp=1) (This is taken from our fits on elastic scattering)  This is questionable right now, external input needed.  Only the type 1 is fit all other values taken from references.
-&POT kp=1 type=0 shape=0 p(1:3)= 11.0 0.0 1.136 /
+# incoming scattering 11Be+9Be (kp=1) (This is taken from our fits on elastic scattering)  This is questionable right now, external input needed.  Only the type 1 is fit all other values taken from references.  In particular, the deformations (type=10) are taken from Keri's input file. They are poorly understood by me.  Doubly so for the fact that they imply a coupling.
+&POT kp=1 type=0 shape=0 p(1:3)= 11.0 9.0 1.136 /
 &POT kp=1 type=1 p(1:6)= 35.15 1.15 0.85 3.50 1.44 0.88  /    #Dont forget to update kp4
-&POT kp=1 type=10 itt=F p1=1.67 p2=2.5/
+&POT kp=1 type=10 itt=F p1=2.75 p2=4.1/ #deformation from Keri
 &POT kp=1 type=2 p(1:6)= 0.0 0.0 0.0 6.8 1.29 0.71  /
-&POT kp=1 type=10 itt=F p1=1.67 p2=2.5/
+&POT kp=1 type=10 itt=F p1=2.75 p2=4.1/
 &POT kp=1 type=3 p1=6.47  p2=1.16 p3=0.51   /
 
-# outgoing scattering 10Be+10Be (kp=2) # https://journals.aps.org/prc/pdf/10.1103/PhysRevC.84.034611 SEE WS-6
-&POT kp=2 type=0 shape=0 p(1:3)= 10.0 0.0 1.136 /
+# outgoing scattering 10Be+10Be (kp=2)
+# derived from 12C+10Be elastic scattering at 23.2 MeV
+# https://journals.aps.org/prc/pdf/10.1103/PhysRevC.84.034611 SEE WS-6
+&POT kp=2 type=0 shape=0 p(1:3)= 10.0 10.0 1.136 /
 &POT kp=2 type=1 shape=0 p(1:6)= 32.35  .89  0.85  5.77  1.37  0.36  /
+&POT kp=2 type=2 shape=0 p(1:6)= 80 .8 .6 0 0 0 /
 
 # n+9Be (kp=3)
 #https://www-nds.iaea.org/cgi-bin/ripl_om_param.pl?Z=6&A=12&ID=15&E1=30&E2=31
-&POT kp=3 type=0 shape=0 p(1:3)= 9.0 0.0 1.136 /
+&POT kp=3 type=0 shape=0 p(1:3)= 9.0 1.0 1.136 /
 &POT kp=3 type=1 shape=0 p(1:6)= 37.4 1.23 0.60 0.0 0.0 0.0  /
 &POT kp=3 type=2 p(1:6)= 0.0 0.0 0.0 6.8 1.23 1.20  /
 &POT kp=3 type=3 shape=0 p(1:6)= 7.0  1.23  0.60 0.0  0.00  0.00  /
 
 # neutron hole state 11Be+hole (kp=4) #This is a copy of kp1, just modified type 10 to type 11.  Type 1 and 2 don't seem to care if they are target or projectile like type 10 -> 11 does.
 &POT kp=4 type=1 p(1:6)= 35.15 1.15 0.85 3.50 1.44 0.88  /
-&POT kp=4 type=11 itt=F p1=1.67 p2=2.5/
+&POT kp=4 type=11 itt=F p1=2.75 p2=4.1/
 &POT kp=4 type=2 p(1:6)= 0.0 0.0 0.0 6.8 1.29 0.71  /
-&POT kp=4 type=11 itt=F p1=1.67 p2=2.5/
+&POT kp=4 type=11 itt=F p1=2.75 p2=4.1/
 &POT kp=4 type=3 p1=6.47  p2=1.16 p3=0.51   /
 &pot /
 
 #The overlap lines give possible paths to populate the final states
-&OVERLAP kn1=1 kn2=1 ic1=1 ic2=2 in=1 kind=0 nn=1 l=1 j=1.5 sn=0.5 kbpot=4  ia=1 ib=1 be=0.501 isc=1 ipc=0 /
-# ^^^ 11Be GS -> 10Be GS via neutron hole (kp=4)
-&OVERLAP kn1=2 kn2=2 ic1=1 ic2=2 in=1 kind=0 nn=1 l=0 j=0.5 sn=0.5 ia=1 ib=2 kbpot=4 be=6.4609 isc=1 ipc=0 /
-# ^^^ 11Be GS -> 10Be 5959 1- via neutron hole (kp=4)
-&OVERLAP kn1=3 kn2=3 ic1=1 ic2=2 in=2 kind=0 nn=1 l=0 j=0.5 sn=0.5 kbpot=3 be=2.165  isc=1 ipc=0 /
-# ^^^ creates a path to the other 10Be?  I am not sure what this does exactly, but Keri indicated it is required.  In her case it was the deuteron.
+&OVERLAP kn1=1 ic1=1 ic2=2 in=1 kind=0 nn=1 l=1 j=1.5 sn=0.5 kbpot=4 be=0.501 isc=1 ipc=0 /
+# ^^^ 11Be (ic1=1) GS (ia=1) -> (in=1) 10Be (ic2=2) GS (ib=1) via neutron hole (kp=4)  the transferred particle pairs to the other 1(nn=1) p(l=1) 3/2(j=1.5).  The neutron removed from the 11Be saw a binding energy of .501 MeV (be=.501)
+&OVERLAP kn1=2 ic1=1 ic2=2 in=1 kind=0 nn=2 l=0 j=0.5 sn=0.5 kbpot=4 be=6.459 isc=1 ipc=0 /
+# ^^^ 11Be GS -> 10Be 5959 1- via neutron hole.  The single particle is 2s1/2 (nn=2, l=0, j=.5) and couples with the existing 1p3/2
+&OVERLAP kn1=3 ic1=1 ic2=2 in=1 kind=0 nn=2 l=0 j=0.5 sn=0.5 kbpot=4 be=6.764 isc=1 ipc=0 /
+# ^^^ 11Be GS -> 10Be 6263 2- via neutron hole.  It seems like I am missing something, since the only thing that changes for this is the binding energy, even though the spin is different.
+&OVERLAP kn1=4 ic1=1 ic2=2 in=2 kind=0 nn=1 l=1 j=1.5 sn=0.5 kbpot=3 be=.501  isc=1 ipc=0 /
+# ^^^ creates a path to the other 10Be?  I am not sure what this does exactly, but Keri indicated it is required.  In her case it was the deuteron.  For now, we assume the mirror of the direct-to-ground state of kn1=1
+
+#In principle, there are quite a few more overlaps that can be added here.  Once I understand the 4 above, hopefully I can extend on my own.  I would need help knowing which ones are relevant.  The number of overlap possibilities quickly blows up as I add states.
 &overlap /
 
-&COUPLING icto=-2 icfrom=1 kind=7 ip1=1 ip2=0 /
-&CFP in=1 ib=1 ia=1 kn=1 a=1.0 /
-#The above line uses a transfer coupling for the first overlap (kn=1) creating the 10Be ground state using the 11Be ground state (ib=1) to get to the ground state of 10Be (ia=1)
+#I think the couplings are used to assign likelihood of the different overlaps being taken?
+&COUPLING icto=-2 icfrom=1 kind=7 ip1=1 ip2=0 / #I now that kind=7 changes the behavior of a few of the parameters.  I need to keep that in mind.
+#icfrom = 1 means we are coming from partition 1
+#icto = -2 means we are going to partition 2. I don't understand the significance of it being negative.
+#ip1=1 means it is a PRIOR interaction.  I don't know what this means though.
+#ip2=0 means no remnant.  I also don't know what this means.
+
 &CFP in=1 ib=1 ia=2 kn=2 a=1.0 /
-#The above line uses a transfer coupling for the third overlap (kn=3) creating the 10Be 1- state using the 11Be ground state (ib=1) to get to the 1- single particle hole state of 10Be (ia=3), the spectroscopic amplitude is 0.63 and scales the final calculation
-&CFP in=2 ib=1 ia=1 kn=3 a=1.0 /
+# ^^^ Couple incoming ground state to outgoing first excited state.
+#in=1 This is similar to before, it indicates that we are looking at a projectile overlap.
+#ia=2 shows we are looking at the excited state of the output channel?
+#ib=1 shows we are looking at the ground state of the input channel.
+#a is the spectroscopic amplitude.
+&CFP in=1 ib=1 ia=3 kn=3 a=1.0 /
+# ^^^ Couple incoming ground state to outgoing second excited state.
+&CFP in=2 ib=1 ia=1 kn=4 a=1.0 /
 #The above line uses a transfer coupling to create the other 10Be, This is like the last overlap section.  I am unsure as to the purpose, but Keri indicates that it is required.
 &coupling /
+
+#Broader concerns:
+#I think I have a good handle on the potentials, but am unsure.  The overlaps and couplings need the most work.
+
+#When running this input, FRESCO calculates 0 cross section for all of the outgoing channels.  It also assigns cross sections to the input channels, which I find hard to interpret.
+# "CROSS SECTIONS FOR OUTGOING 11Be     & 9Be      in state #   1 with spins & parities 0.5  + &  1.5  -;  0"
+# above has non-zero cross sections
+
+# " CROSS SECTIONS FOR OUTGOING 10Be_Bea & 10Be_Tar in state #   1 with spins & parities 0.0  + &  0.0  +;  0"
+# above has zero cross sections
