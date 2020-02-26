@@ -1,4 +1,7 @@
 elastic.search
+fix 9
+fix 10
+fix 11
 min
 migrand
 migrand
