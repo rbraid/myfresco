@@ -11,11 +11,11 @@ elif [ $# -gt 1 ]
 then
 #   echo "Parameter Mode Active"
   MODE="PARAM"
-elif [ $@ == "full" ] || [ $@ == "Full" ] || [ $@ == "FULL" ] 
+elif [ $@ == "full" ] || [ $@ == "Full" ] || [ $@ == "FULL" ]
 then
   echo "Full Mode Active"
   MODE="FULL"
-elif [ $@ == "optical" ] || [ $@ == "Optical" ] || [ $@ == "OPTICAL" ] 
+elif [ $@ == "optical" ] || [ $@ == "Optical" ] || [ $@ == "OPTICAL" ]
 then
   echo "Optical Only Active"
   MODE="OPTICAL"
@@ -32,10 +32,10 @@ fi
 if [ $MODE != "PARAM" ]
 then
   tput setaf 2
-  if [ $MODE == "FULL" ] 
+  if [ $MODE == "FULL" ]
   then
     echo -e "Beinning to run Elastic"
-  elif [ $MODE == "OPTICAL" ] 
+  elif [ $MODE == "OPTICAL" ]
   then
     echo -e "Beinning to run Elastic Optical Only"
   fi
@@ -45,45 +45,45 @@ then
   tput setaf 2
   echo -e "Beinning to run Fresco"
   tput sgr0
-  if [ $MODE == "FULL" ] 
+  if [ $MODE == "FULL" ]
   then
-  runfresco elastic.in elastic.out
-  elif [ $MODE == "OPTICAL" ] 
+  fresco < elastic.in > elastic.out
+  elif [ $MODE == "OPTICAL" ]
   then
-  runfresco elastic_opticalOnly.in elastic_opticalOnly.out
+  fresco < elastic_opticalOnly.in > elastic_opticalOnly.out
   fi
-  echo 
+  echo
 
   tput setaf 2
   echo -e "Beinning to convert Fresco output to ROOT output"
   tput sgr0
-  if [ $MODE == "FULL" ] 
+  if [ $MODE == "FULL" ]
   then
   python $UTILDIR/slimgrace2root.py fort.16 elastic_before.root
-  elif [ $MODE == "OPTICAL" ] 
+  elif [ $MODE == "OPTICAL" ]
   then
   python $UTILDIR/slimgrace2root.py fort.16 elastic_opticalOnly_before.root
   fi
 
-  tput setaf 2
-  echo -e "Beinning to calculate normalization"
-  tput sgr0
-  if [ $MODE == "FULL" ] 
-  then
-  python $UTILDIR/calcNorm.py elastic_before.root ~/nuclear/mine/rb/angulardistribution/angOutReal.root elastic_norm.root
-  elif [ $MODE == "OPTICAL" ] 
-  then
-  python $UTILDIR/calcNorm.py elastic_opticalOnly_before.root ~/nuclear/mine/rb/angulardistribution/angOutReal.root elastic_opticalOnly_norm.root
-  fi
+  # tput setaf 2
+  # echo -e "Beinning to calculate normalization"
+  # tput sgr0
+  # if [ $MODE == "FULL" ]
+  # then
+  # python $UTILDIR/calcNorm.py elastic_before.root ~/nuclear/mine/rb/angulardistribution/angOutReal.root elastic_norm.root
+  # elif [ $MODE == "OPTICAL" ]
+  # then
+  # python $UTILDIR/calcNorm.py elastic_opticalOnly_before.root ~/nuclear/mine/rb/angulardistribution/angOutReal.root elastic_opticalOnly_norm.root
+  # fi
 fi
 
 tput setaf 2
 echo -e "Beinning to convert angular distribution to the search file for sfresco"
 tput sgr0
-if [ $MODE == "FULL" ] 
+if [ $MODE == "FULL" ]
 then
 python $UTILDIR/angdist2fresco.py $ANGDIR/angOutReal.root elastic.search
-elif [ $MODE == "OPTICAL" ] 
+elif [ $MODE == "OPTICAL" ]
 then
 python $UTILDIR/angdist2fresco.py $ANGDIR/angOutReal.root elastic_opticalOnly.search
 elif [ $MODE == "PARAM" ]
@@ -94,10 +94,10 @@ fi
 tput setaf 2
 echo -e "Beinning to run sfresco"
 tput sgr0
-if [ $MODE == "FULL" ] 
+if [ $MODE == "FULL" ]
 then
 sfresco < sfrescoCommands.txt
-elif [ $MODE == "OPTICAL" ] 
+elif [ $MODE == "OPTICAL" ]
 then
 sfresco < sfrescoCommands_opticalOnly.txt
 elif [ $MODE == "PARAM" ]
@@ -120,10 +120,10 @@ echo
 tput setaf 2
 echo -e "Beinning to convert sfresco output to ROOT"
 tput sgr0
-if [ $MODE == "FULL" ] 
+if [ $MODE == "FULL" ]
 then
 python $UTILDIR/slimgrace2root.py elastic.plot elastic_after.root
-elif [ $MODE == "OPTICAL" ] 
+elif [ $MODE == "OPTICAL" ]
 then
 python $UTILDIR/slimgrace2root.py elastic_opticalOnly.plot elastic_opticalOnly_after.root
 elif [ $MODE == "PARAM" ]
@@ -132,19 +132,19 @@ python $UTILDIR/slimgrace2root.py elastic_$1_$2_$3_$4_$5_$6_$7.plot elastic_afte
 fi
 echo
 
-if [ $MODE == "PARAM" ] 
+if [ $MODE == "PARAM" ]
 then
 cp elastic_after_$1_$2_$3_$4_$5_$6_$7.root afters/
 fi
 
 
-if [ $MODE == "FULL" ] 
+if [ $MODE == "FULL" ]
 then
 tput setaf 2
 echo -e "Beinning to make a blurred version of the sfresco fit"
 tput sgr0
 python $UTILDIR/frescoblur.py elastic_after.root blurred_after.root
-elif [ $MODE == "OPTICAL" ] 
+elif [ $MODE == "OPTICAL" ]
 then
 tput setaf 2
 echo -e "Beinning to make a blurred version of the sfresco fit"
@@ -155,13 +155,13 @@ echo
 
 
 
-if [ $MODE == "FULL" ] 
+if [ $MODE == "FULL" ]
 then
 tput setaf 2
 echo -e "Generating nice png"
 tput sgr0
 python $UTILDIR/plotter.py full
-elif [ $MODE == "OPTICAL" ] 
+elif [ $MODE == "OPTICAL" ]
 then
 tput setaf 2
 echo -e "Generating nice png"
