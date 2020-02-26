@@ -8,7 +8,7 @@ NAMELIST
 	 elab= 30.14 lin = 1  /
 
 &PARTITION namep='11Be' massp=11.021661 zp=4
-           namet='9Be' masst=9.012183 zt=4 nex=2 qval=0.0 /
+           namet='9Be' masst=9.012183 zt=4 nex=1 qval=0.0 /
 &STATES jp=0.5 bandp=1 ep=0 cpot=1 jt=0.5 bandt=1 et=0 /
 &partition /
 
