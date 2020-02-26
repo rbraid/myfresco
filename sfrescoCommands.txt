@@ -1,6 +1,7 @@
 elastic.search
 min
 migrand
+migrand
 end
 plot elastic.plot
 exit
