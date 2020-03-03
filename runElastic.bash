@@ -104,9 +104,12 @@ elif [ $MODE == "PARAM" ]
 then
 sfresco <<EOF
 elastic_$1_$2_$3_$4_$5_$6_$7.search
-fix 1
+fix 9
+fix 10
+fix 11
 
 min
+migrand
 migrand
 end
 
