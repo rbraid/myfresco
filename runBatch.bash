@@ -9,8 +9,8 @@ rm ../outputs/*.par
 tput setaf 2
 echo -e "Beinning to run Fresco"
 tput sgr0
-runfresco elastic.in elastic.out
-echo 
+fresco < elastic.in > elastic.out
+echo
 
 tput setaf 2
 echo -e "Beinning to convert Fresco output to ROOT output"
@@ -33,9 +33,7 @@ tput setaf 2
 echo -e "Beginning to run the parallel sfresco fits for different parameters"
 tput sgr0
 
-nice -n 19 parallel --timeout 300%  --tmpdir ~/nuclear/mine/outputs/ --files --bar --shuf bash runElastic.bash ::: 1.1 ::: 15 25 50 100 150 ::: 1. 1.1 1.2 1.3 ::: .4 .5 .6 .7 .8 ::: 4 6 8 ::: 1.2 1.3 1.4 ::: .4 .5 .6 .7 .8
-
-# nice -n 19 parallel --tmpdir ~/nuclear/mine/fresco/outputs --files --bar --shuf bash runElastic.bash ::: 1.2 ::: 15  ::: .7 ::: .5 ::: 6 ::: 1.3 ::: .5
+nice -n 19 parallel --timeout 300%  --tmpdir ~/nuclear/mine/outputs/ --files --bar --shuf bash runElastic.bash ::: .9 1.1 1.3 ::: 15 25 50 100  ::: 1. 1.15 1.3 ::: .4 .8 ::: 4  8 ::: 1.2  1.4 ::: .4 .8
 
 tput setaf 2
 echo -e "Creating Nice Plots"
@@ -50,7 +48,7 @@ python ../utils/parseMINUIT.py ../../outputs/par*.par
 tput setaf 2
 echo -e "Making Pairplot from csv"
 tput sgr0
-python ../utils/checkCorrelations.py 
+python ../utils/checkCorrelations.py
 
 rm *trace
 rm *snap
