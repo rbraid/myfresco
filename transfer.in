@@ -52,5 +52,4 @@ NAMELIST
 &CFP in=2 ia=1 ib=2 kn=2 a=1.0 /
 &CFP in=2 ia=1 ib=3 kn=3 a=1.0 /
 &CFP in=2 ia=1 ib=4 kn=4 a=1.0 /
-
 &coupling /
