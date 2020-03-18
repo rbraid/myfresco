@@ -17,7 +17,7 @@ NAMELIST
 &partition /
 
 &POT kp=1 type=0 shape=0 ap=11.021661 at=9.012183 rc=1.1555  /
-&POT kp=1 type=1 p1=45.559 p=1.191 p3=0.56288 p4=0 p5=0 p6=0  /
+&POT kp=1 type=1 p1=45.559 p2=1.191 p3=0.56288 p4=0 p5=0 p6=0  /
 &POT kp=1 type=2 p(1:6)= 0.0 0.0 0.0 6.485 1.046 1.1883  /
 &POT kp=1 type=3 p1=6.47  p2=1.15 p3=0.633   /
 
@@ -36,7 +36,7 @@ NAMELIST
 &POT kp=3 type=3 shape=0 p(1:6)= 7.0  1.23  0.60 0.0  0.00  0.00  /
 
 &POT kp=1 type=0 shape=0 ap=11.021661 at=9.012183 rc=1.1555  /
-&POT kp=1 type=1 p1=45.559 p=1.191 p3=0.56288 p4=0 p5=0 p6=0  /
+&POT kp=1 type=1 p1=45.559 p2=1.191 p3=0.56288 p4=0 p5=0 p6=0  /
 &POT kp=1 type=3 p1=6.47  p2=1.15 p3=0.633   /
 &pot /
 
