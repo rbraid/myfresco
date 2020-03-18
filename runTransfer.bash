@@ -19,13 +19,13 @@ echo -e "Beinning to convert Fresco output to ROOT output"
 tput sgr0
 python $UTILDIR/slimgrace2root.py fort.16 transfer_before.root
 
-
-tput setaf 2
-echo -e "Beinning to convert angular distribution to the search file for sfresco"
-tput sgr0
-tput setaf 1
-echo -e "NOT IMPLEMENTED, SHORT CIRCUIT PAST SFRESCO"
-tput sgr0
+#
+# tput setaf 2
+# echo -e "Beinning to convert angular distribution to the search file for sfresco"
+# tput sgr0
+# tput setaf 1
+# echo -e "NOT IMPLEMENTED, SHORT CIRCUIT PAST SFRESCO"
+# tput sgr0
 # python $UTILDIR/angdist2fresco.py $ANGDIR/angOutReal.root transfer.search
 
 
