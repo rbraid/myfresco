@@ -19,6 +19,31 @@ echo -e "Beinning to convert Fresco output to ROOT output"
 tput sgr0
 python $UTILDIR/slimgrace2root.py fort.16 transfer_before.root
 
+tput setaf 2
+echo -e "Generating search file"
+tput sgr0
+python SpectroscopicFactor/GenerateSearchFile.py
+
+
+sfresco <<EOF
+twoMinus.search
+
+min
+migrand
+end
+
+plot twoMinus.plot
+exit
+EOF
+
+echo
+echo
+
+tput setaf 2
+echo -e "Beinning to convert SFresco output to ROOT output"
+tput sgr0
+python $UTILDIR/slimgrace2root.py twoMinus.plot twoMinus.root
+
 # tput setaf 2
 # echo -e "Beinning to make a blurred version of the sfresco fit"
 # tput sgr0
@@ -28,10 +53,10 @@ python $UTILDIR/slimgrace2root.py fort.16 transfer_before.root
 
 
 tput setaf 2
-echo -e "Generating nice png"
+echo -e "Generating pngs"
 tput sgr0
 python $UTILDIR/realDraw.py
-
+python SpectroscopicFactor/DrawSpectroscopics.py
 echo
 
 
