@@ -13,24 +13,20 @@ args = parser.parse_args()
 
 print "{} mode.".format(args.Mode)
 
-if args.Mode != "1-" and args.Mode != "2+" and args.Mode != "2-":
-  print "Mode Unrecognized! Use '1-', '2+', or '2-'"
+if args.Mode != "oneMinus" and args.Mode != "twoPlus" and args.Mode != "twoMinus":
+  print "Mode Unrecognized! Use 'oneMinus', 'twoPlus', or 'twoMinus'"
   quit()
 
-dataStr = "default"
 dataPointer = -1
 
-if args.Mode == "1-":
-  dataStr = "oneMinus"
+if args.Mode == "oneMinus":
   dataPointer = 2
-elif args.Mode == "2-":
-  dataStr = "twoMinus"
+elif args.Mode == "twoMinus":
   dataPointer = 3
-elif args.Mode == "2+":
-  dataStr = "twoPlus"
+elif args.Mode == "twoPlus":
   dataPointer = 4
 
-sfrescoF = TFile.Open("{}.root".format(dataStr),"read")
+sfrescoF = TFile.Open("{}.root".format(args.Mode),"read")
 
 frescoH = frescoF.Get("G{}".format(dataPointer))
 dataHAfter = sfrescoF.Get("G0")
@@ -41,7 +37,7 @@ colors = [ROOT.kGreen, ROOT.kRed, ROOT.kBlue, ROOT.kOrange]
 canvas = TCanvas('canvas','shouldnotseethis',0,0,1280,720)
 canvas.SetLogy()
 
-Dummy = ROOT.TH2F("Dummy","Checking {} SFRESCO".format(dataStr),90,0,180,1000000,0,1000)
+Dummy = ROOT.TH2F("Dummy","Checking {} SFRESCO".format(args.Mode),90,0,180,1000000,0,1000)
 Dummy.GetXaxis().SetTitle("COM Angle in Degrees")
 Dummy.GetYaxis().SetTitle("Cross Section in mb/sr")
 
@@ -74,4 +70,4 @@ sfrescoH.Draw("sameL")
 
 leg.Draw()
 
-canvas.SaveAs("{}SFRESCO.png".format(dataStr))
+canvas.SaveAs("SpectroscopicFactor/{}SFRESCO.png".format(args.Mode))

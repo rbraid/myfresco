@@ -23,25 +23,28 @@ echo -e "Generating initial pngs, and splitting angular distributions into pure 
 tput sgr0
 python $UTILDIR/realDraw.py
 
-MODESYMBOL="2-"
-MODETEXT="twoMinus"
-
-tput setaf 2
-echo -e "Generating search file for ${MODESYMBOL}"
+for MODE in twoMinus oneMinus twoPlus
+do
+tput setaf 4
+echo -e "Running ${MODE}"
 tput sgr0
-python SpectroscopicFactor/GenerateSearchFile.py ${MODESYMBOL}
 
 tput setaf 2
-echo -e "Running SFRESCO for ${MODESYMBOL}"
+echo -e "Generating search file for ${MODE}"
+tput sgr0
+python SpectroscopicFactor/GenerateSearchFile.py ${MODE}
+
+tput setaf 2
+echo -e "Running SFRESCO for ${MODE}"
 tput sgr0
 sfresco <<EOF
-${MODETEXT}.search
+${MODE}.search
 
 min
 migrand
 end
 
-plot ${MODETEXT}.plot
+plot ${MODE}.plot
 exit
 EOF
 
@@ -51,14 +54,14 @@ echo
 tput setaf 2
 echo -e "Beinning to convert SFresco output to ROOT output"
 tput sgr0
-python $UTILDIR/slimgrace2root.py ${MODETEXT}.plot ${MODETEXT}.root
+python $UTILDIR/slimgrace2root.py ${MODE}.plot ${MODE}.root
 
 tput setaf 2
 echo -e "Generating pngs"
 tput sgr0
-python SpectroscopicFactor/DrawSpectroscopics.py ${MODESYMBOL}
+python SpectroscopicFactor/DrawSpectroscopics.py ${MODE}
 echo
-
+done
 
 tput setab 2
 printf "All done"
