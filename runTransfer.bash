@@ -1,7 +1,6 @@
 #!/bin/bash
 MODE="UNDEFINED"
 UTILDIR="/home/ryan/nuclear/mine/fresco/utils"
-ANGDIR="/home/ryan/nuclear/mine/rb/angulardistribution"
 
 echo
 tput setaf 2
@@ -24,22 +23,25 @@ echo -e "Generating initial pngs, and splitting angular distributions into pure 
 tput sgr0
 python $UTILDIR/realDraw.py
 
-tput setaf 2
-echo -e "Generating search file"
-tput sgr0
-python SpectroscopicFactor/GenerateSearchFile.py 2-
+MODESYMBOL="2-"
+MODETEXT="twoMinus"
 
 tput setaf 2
-echo -e "Running SFRESCO"
+echo -e "Generating search file for ${MODESYMBOL}"
+tput sgr0
+python SpectroscopicFactor/GenerateSearchFile.py ${MODESYMBOL}
+
+tput setaf 2
+echo -e "Running SFRESCO for ${MODESYMBOL}"
 tput sgr0
 sfresco <<EOF
-twoMinus.search
+${MODETEXT}.search
 
 min
 migrand
 end
 
-plot twoMinus.plot
+plot ${MODETEXT}.plot
 exit
 EOF
 
@@ -49,12 +51,12 @@ echo
 tput setaf 2
 echo -e "Beinning to convert SFresco output to ROOT output"
 tput sgr0
-python $UTILDIR/slimgrace2root.py twoMinus.plot twoMinus.root
+python $UTILDIR/slimgrace2root.py ${MODETEXT}.plot ${MODETEXT}.root
 
 tput setaf 2
 echo -e "Generating pngs"
 tput sgr0
-python SpectroscopicFactor/DrawSpectroscopics.py 2-
+python SpectroscopicFactor/DrawSpectroscopics.py ${MODESYMBOL}
 echo
 
 
