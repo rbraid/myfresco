@@ -18,7 +18,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("Mode", help='Input Location & Name')
 args = parser.parse_args()
 
-print "{} mode.".format(args.Mode)
+# print "{} mode.".format(args.Mode)
 
 if args.Mode != "oneMinus" and args.Mode != "twoPlus" and args.Mode != "twoMinus":
   print "Mode Unrecognized! Use 'oneMinus', 'twoPlus', or 'twoMinus'"
