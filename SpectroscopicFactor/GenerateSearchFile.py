@@ -1,14 +1,5 @@
 from ROOT import TFile, TGraphErrors
 
-scalefactor = 0.77214E-04
-
-def ScaleTGraph(graph):
-  for i in range(graph.GetN()):
-    graph.GetY()[i] *= scalefactor;
-    graph.GetEY()[i] *= scalefactor
-
-  return graph
-
 def WriteGraph(graph):
   for i in range(graph.GetN()):
     outfile.write(" {}  {}  {}\n".format(graph.GetX()[i],graph.GetY()[i],graph.GetEY()[i]))
