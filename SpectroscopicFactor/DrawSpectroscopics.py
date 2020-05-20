@@ -37,7 +37,7 @@ colors = [ROOT.kGreen, ROOT.kRed, ROOT.kBlue, ROOT.kOrange]
 canvas = TCanvas('canvas','shouldnotseethis',0,0,1280,720)
 canvas.SetLogy()
 
-Dummy = ROOT.TH2F("Dummy","Checking {} SFRESCO".format(args.Mode),90,0,180,1000000,0,1000)
+Dummy = ROOT.TH2F("Dummy","Checking {} SFRESCO".format(args.Mode),90,0,180,1000000,0,10000)
 Dummy.GetXaxis().SetTitle("COM Angle in Degrees")
 Dummy.GetYaxis().SetTitle("Cross Section in mb/sr")
 
@@ -45,7 +45,7 @@ Dummy.SetStats(ROOT.kFALSE)
 Dummy.Draw()
 
 Dummy.SetAxisRange(0,60,"X")
-Dummy.SetAxisRange(.00000001,1000,"Y")
+Dummy.SetAxisRange(.0000001,10000,"Y")
 
 leg = TLegend(0.65,.65,.9,.9)
 
