@@ -73,6 +73,11 @@ python SpectroscopicFactor/DrawSpectroscopics.py ${MODE}
 echo
 done
 
+tput setaf 2
+echo -e "Generating Back-Calculated Distributions"
+tput sgr0
+python ../utils/backCalculate.py
+
 tput setab 2
 printf "All done"
 tput sgr0
