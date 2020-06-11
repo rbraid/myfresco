@@ -41,7 +41,7 @@ colors = [ROOT.kGreen, ROOT.kRed, ROOT.kBlue, ROOT.kOrange]
 canvas = TCanvas('canvas','shouldnotseethis',0,0,1280,720)
 canvas.SetLogy()
 
-Dummy = ROOT.TH2F("Dummy","Checking {} SFRESCO".format(args.Mode),90,0,180,1000000,0,10000)
+Dummy = ROOT.TH2F("Dummy","SFRESCO Spectroscopic Factor Check for {}".format(args.Mode),90,0,180,1000000,0,10000)
 Dummy.GetXaxis().SetTitle("COM Angle in Degrees")
 Dummy.GetYaxis().SetTitle("Cross Section in mb/sr")
 
@@ -53,25 +53,26 @@ Dummy.SetAxisRange(.0000001,10000,"Y")
 
 leg = TLegend(0.65,.65,.9,.9)
 
-frescoH.SetMarkerColor(ROOT.kBlack)
-frescoH.SetLineColor(ROOT.kBlack)
-frescoH.SetFillColor(ROOT.kWhite)
-leg.AddEntry(frescoH,"FRESCO Raw Output")
-frescoH.Draw("sameL")
-
 dataHAfter.SetMarkerColor(ROOT.TColor.GetColorDark(gColor))
 dataHAfter.SetLineColor(ROOT.TColor.GetColorDark(gColor))
 dataHAfter.SetFillColor(ROOT.kWhite)
 dataHAfter.SetMarkerStyle(20)
-leg.AddEntry(dataHAfter,"Data")
+leg.AddEntry(dataHAfter,"Experimental Data")
 dataHAfter.Draw("sameP")
 
 sfrescoH.SetMarkerColor(gColor)
 sfrescoH.SetLineColor(gColor)
 sfrescoH.SetFillColor(ROOT.kWhite)
 sfrescoH.SetLineWidth(2)
-leg.AddEntry(sfrescoH,"SFRESCO Output")
+sfrescoH.SetLineStyle(2)
+leg.AddEntry(sfrescoH,"SFRESCO Fit of Spectroscopic Factor")
 sfrescoH.Draw("sameL")
+
+frescoH.SetMarkerColor(ROOT.kBlack)
+frescoH.SetLineColor(ROOT.kBlack)
+frescoH.SetFillColor(ROOT.kWhite)
+leg.AddEntry(frescoH,"Spectroscopic Factor = 1")
+frescoH.Draw("sameL")
 
 leg.Draw()
 
