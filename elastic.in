@@ -13,8 +13,8 @@ NAMELIST
 &partition /
 
 &POT kp=1 type=0 shape=0 ap=11. at=9. rc=.62  /
-&POT kp=1 type=1 p1=32.35 p=.89 p3=0.85 p4=0 p5=0 p6=0  /
-&POT kp=1 type=2 p(1:6)= 0.0 0.0 0.0 5.77 1.37 .36  /
+&POT kp=1 type=1 V=32.35 vr0=.89  a=0.85/
+&POT kp=1 type=2 W=5.77  wr0=1.37 aw=.36  /
 &pot /
 
 &overlap /
