@@ -2,6 +2,7 @@
 MODE="DEFAULT"
 UTILDIR="/home/ryan/nuclear/mine/fresco/utils"
 ANGDIR="/home/ryan/nuclear/mine/rb/angulardistribution"
+RRUTH="True"
 
 if [ $# -eq 0 ]
 then
@@ -82,13 +83,23 @@ echo -e "Beinning to convert angular distribution to the search file for sfresco
 tput sgr0
 if [ $MODE == "FULL" ]
 then
-python $UTILDIR/angdist2fresco.py $ANGDIR/angOutReal.root elastic.search
+python $UTILDIR/angdist2fresco.py $ANGDIR/angOutReal.root elastic.search $RRUTH
 elif [ $MODE == "OPTICAL" ]
 then
 python $UTILDIR/angdist2fresco.py $ANGDIR/angOutReal.root elastic_opticalOnly.search
 elif [ $MODE == "PARAM" ]
 then
 python $UTILDIR/angdist2fresco.py $ANGDIR/angOutReal.root elastic_$1_$2_$3_$4_$5_$6_$7.search $1 $2 $3 $4 $5 $6 $7
+fi
+
+if [ $MODE == "FULL" ] && [ $RRUTH == "True" ]
+then
+sfresco <<EOF
+elastic.search
+
+plot elastic_rRuth.plot
+exit
+EOF
 fi
 
 tput setaf 2
@@ -135,26 +146,31 @@ python $UTILDIR/slimgrace2root.py elastic_$1_$2_$3_$4_$5_$6_$7.plot elastic_afte
 fi
 echo
 
+if [ $MODE == "FULL" ] && [ $RRUTH == "True" ]
+then
+python $UTILDIR/slimgrace2root.py elastic_rRuth.plot elastic_rRuth.root
+fi
+
 if [ $MODE == "PARAM" ]
 then
 cp elastic_after_$1_$2_$3_$4_$5_$6_$7.root afters/
 fi
 
 
-if [ $MODE == "FULL" ]
-then
-tput setaf 2
-echo -e "Beinning to make a blurred version of the sfresco fit"
-tput sgr0
-python $UTILDIR/frescoblur.py elastic_after.root blurred_after.root
-elif [ $MODE == "OPTICAL" ]
-then
-tput setaf 2
-echo -e "Beinning to make a blurred version of the sfresco fit"
-tput sgr0
-python $UTILDIR/frescoblur.py elastic_opticalOnly_after.root blurred_opticalOnly_after.root
-fi
-echo
+# if [ $MODE == "FULL" ]
+# then
+# tput setaf 2
+# echo -e "Beinning to make a blurred version of the sfresco fit"
+# tput sgr0
+# python $UTILDIR/frescoblur.py elastic_after.root blurred_after.root
+# elif [ $MODE == "OPTICAL" ]
+# then
+# tput setaf 2
+# echo -e "Beinning to make a blurred version of the sfresco fit"
+# tput sgr0
+# python $UTILDIR/frescoblur.py elastic_opticalOnly_after.root blurred_opticalOnly_after.root
+# fi
+# echo
 
 
 
@@ -163,7 +179,7 @@ then
 tput setaf 2
 echo -e "Generating nice png"
 tput sgr0
-python $UTILDIR/plotter.py full
+python $UTILDIR/plotter.py full $RRUTH
 elif [ $MODE == "OPTICAL" ]
 then
 tput setaf 2
