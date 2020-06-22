@@ -12,10 +12,9 @@ NAMELIST
 &STATES jp=0.5 bandp=1 ep=0 cpot=1 jt=0.5 bandt=1 et=0 /
 &partition /
 
-&POT kp=1 type=0 shape=0 ap=11. at=9. rc=1.1555  /
-&POT kp=1 type=1 p1=45.559 p=1.191 p3=0.56288 p4=0 p5=0 p6=0  /
-&POT kp=1 type=2 p(1:6)= 0.0 0.0 0.0 6.485 1.046 1.1883  /
-&POT kp=1 type=3 p1=6.47  p2=1.15 p3=0.633   /
+&POT kp=1 type=0 shape=0 ap=11. at=9. rc=.62  /
+&POT kp=1 type=1 p1=32.35 p=.89 p3=0.85 p4=0 p5=0 p6=0  /
+&POT kp=1 type=2 p(1:6)= 0.0 0.0 0.0 5.77 1.37 .36  /
 &pot /
 
 &overlap /
