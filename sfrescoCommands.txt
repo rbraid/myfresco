@@ -6,6 +6,9 @@ fix 5
 fix 6
 fix 7
 fix 8
+fix 9
+fix 10
+fix 11
 
 min
 migrand
@@ -32,10 +35,10 @@ min
 migrand
 end
 
-step 2 .01
-step 3 .1
-step 4 .01
-step 5 .01
+step 2 .001
+step 3 .01
+step 4 .001
+step 5 .001
 
 min
 migrand
