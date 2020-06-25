@@ -2,7 +2,6 @@
 MODE="DEFAULT"
 UTILDIR="/home/ryan/nuclear/mine/fresco/utils"
 ANGDIR="/home/ryan/nuclear/mine/rb/angulardistribution"
-RRUTH="True"
 
 if [ $# -eq 0 ]
 then
@@ -83,7 +82,16 @@ echo -e "Beinning to convert angular distribution to the search file for sfresco
 tput sgr0
 if [ $MODE == "FULL" ]
 then
-python $UTILDIR/angdist2fresco.py $ANGDIR/angOutReal.root elastic.search $RRUTH
+python $UTILDIR/angdist2fresco.py $ANGDIR/angOutReal.root elastic.search False
+python $UTILDIR/angdist2fresco.py $ANGDIR/angOutReal.root elastic_rRuth.search True
+
+sfresco <<EOF
+elastic_rRuth.search
+
+plot elastic_rRuth.plot
+exit
+EOF
+
 elif [ $MODE == "OPTICAL" ]
 then
 python $UTILDIR/angdist2fresco.py $ANGDIR/angOutReal.root elastic_opticalOnly.search
@@ -92,15 +100,6 @@ then
 python $UTILDIR/angdist2fresco.py $ANGDIR/angOutReal.root elastic_$1_$2_$3_$4_$5_$6_$7.search $1 $2 $3 $4 $5 $6 $7
 fi
 
-if [ $MODE == "FULL" ] && [ $RRUTH == "True" ]
-then
-sfresco <<EOF
-elastic.search
-
-plot elastic_rRuth.plot
-exit
-EOF
-fi
 
 tput setaf 2
 echo -e "Beinning to run sfresco"
@@ -137,6 +136,8 @@ tput sgr0
 if [ $MODE == "FULL" ]
 then
 python $UTILDIR/slimgrace2root.py elastic.plot elastic_after.root
+python $UTILDIR/slimgrace2root.py elastic_rRuth.plot elastic_rRuth.root
+
 elif [ $MODE == "OPTICAL" ]
 then
 python $UTILDIR/slimgrace2root.py elastic_opticalOnly.plot elastic_opticalOnly_after.root
@@ -145,11 +146,6 @@ then
 python $UTILDIR/slimgrace2root.py elastic_$1_$2_$3_$4_$5_$6_$7.plot elastic_after_$1_$2_$3_$4_$5_$6_$7.root
 fi
 echo
-
-if [ $MODE == "FULL" ] && [ $RRUTH == "True" ]
-then
-python $UTILDIR/slimgrace2root.py elastic_rRuth.plot elastic_rRuth.root
-fi
 
 if [ $MODE == "PARAM" ]
 then
@@ -179,7 +175,8 @@ then
 tput setaf 2
 echo -e "Generating nice png"
 tput sgr0
-python $UTILDIR/plotter.py full $RRUTH
+python $UTILDIR/plotter.py full True
+python $UTILDIR/plotter.py full False
 elif [ $MODE == "OPTICAL" ]
 then
 tput setaf 2
