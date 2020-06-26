@@ -140,6 +140,39 @@ def MakeCorrGraphs(bigList):
         tmpGraph.SetName(varName+"_vs_ChiSquare")
         tmpGraph.Write()
 
+def MakeSearchFile(myList):
+        # tmpList = [chiSquare, newName, deets[1],deets[2],deets[3],deets[4],deets[5],deets[6],deets[7],deets[8],deets[9],deets[10].replace('.root',''), tmpNorm, tmpScaledDataG, tmpHisto]
+    searchOut = open("search_{}_{}_{}_{}_{}_{}_{}_{}_{}_{}.search".format(myList[2], myList[3], myList[4],myList[5], myList[6], myList[7],myList[8], myList[9], myList[10], myList[11]), "w")
+    searchOut.write("'input_{}_{}_{}_{}_{}_{}_{}_{}_{}_{}.in'".format(myList[2], myList[3], myList[4],myList[5], myList[6], myList[7],myList[8], myList[9], myList[10], myList[11]))
+    searchOut.write(" 'output_{}_{}_{}_{}_{}_{}_{}_{}_{}_{}.out'\n".format(myList[2], myList[3], myList[4],myList[5], myList[6], myList[7],myList[8], myList[9], myList[10], myList[11]))
+    searchOut.write("11 1\n")
+    searchOut.write(" &variable kind=5 name='norm' dataset=1 datanorm= {}/\n".format(myList[-3]))
+    searchOut.write(" &variable kind=1 name='r0C' kp=1 pline=1 col=3 potential={} step=.01/\n".format(myList[2]))
+    searchOut.write(" &variable kind=1 name='V' kp=1 pline=2 col=1 potential={}  step=.1/\n".format(myList[3]))
+    searchOut.write(" &variable kind=1 name='r0' kp=1 pline=2 col=2 potential={} step=.01/\n".format(myList[4]))
+    searchOut.write(" &variable kind=1 name='a' kp=1 pline=2 col=3 potential={} step=.01/\n".format(myList[5]))
+    searchOut.write(" &variable kind=1 name='W' kp=1 pline=3 col=4 potential={} step=.1/\n".format(myList[6]))
+    searchOut.write(" &variable kind=1 name='rW' kp=1 pline=3 col=5 potential={} step=.01/\n".format(myList[7]))
+    searchOut.write(" &variable kind=1 name='aW' kp=1 pline=3 col=6 potential={} step=.01/\n".format(myList[8]))
+    searchOut.write(" &variable kind=1 name='Vso' kp=1 pline=4 col=1 potential={}  step=.02/\n".format(myList[9]))
+    searchOut.write(" &variable kind=1 name='rso' kp=1 pline=4 col=2 potential={} step=.01/\n".format(myList[10]))
+    searchOut.write(" &variable kind=1 name='aso' kp=1 pline=4 col=3 potential={}  step=.01/\n".format(myList[11]))
+    searchOut.write(" &data idir=0 lab=F abserr=T iscale=-1 ic=1 ia=1/\n")
+    searchOut.write(" 39.059150092  427143.002848  20628.3448026\n")
+    searchOut.write(" 31.3199979321  1264600.60779  60618.4318559\n")
+    searchOut.write(" 35.4667075188  555170.42659  23887.2534559\n")
+    searchOut.write(" 41.2300474345  137036.652493  7433.19265619\n")
+    searchOut.write(" 43.9678467908  168671.421207  7230.68806548\n")
+    searchOut.write(" 48.189152681  55952.3841828  1876.98824895\n")
+    searchOut.write(" 53.1417526255  46114.1973612  1754.08673178\n")
+    searchOut.write(" 56.9049315953  20753.5074491  1165.30693998\n")
+    searchOut.write(" 61.5991600461  7231.41158925  399.446429064\n")
+    searchOut.write(" 66.4747692434  17803.9020474  1081.72089957\n")
+    searchOut.write(" 69.4898614779  2681.64788421  438.702489556\n")
+    searchOut.write("&\n")
+
+
+
 parser = argparse.ArgumentParser()
 parser.add_argument("files", nargs="+")
 
@@ -195,12 +228,12 @@ for fileStr in myargs.files:
     func = TGraphToTF1(tmpHisto)
     chiSquare = tmpScaledDataG.Chisquare(func)
 
-    tmpList = [chiSquare, newName, deets[1],deets[2],deets[3],deets[4],deets[5],deets[6],deets[7],deets[8],deets[9],deets[10].replace('.root',''), tmpScaledDataG, tmpHisto]
+    tmpList = [chiSquare, newName, deets[1],deets[2],deets[3],deets[4],deets[5],deets[6],deets[7],deets[8],deets[9],deets[10].replace('.root',''), tmpNorm, tmpScaledDataG, tmpHisto]
     myDataList.append(tmpList)
 
 myDataList.sort(key=lambda x: x[0])
 
-MakeCSV(myDataList)
+# MakeCSV(myDataList)
 
 # MakeCorrGraphs(myDataList)
 # MakePlot(myDataList,"First_Five")
@@ -219,10 +252,13 @@ curatedList = []
 # MakePlot(curatedList,"Ryans_Curated_Five")
 #
 # #
+curatedList.append(myDataList[0])
 curatedList.append(myDataList[2])
-curatedList.append(myDataList[14])
-curatedList.append(myDataList[22])
-curatedList.append(myDataList[29])
-curatedList.append(myDataList[78])
+# curatedList.append(myDataList[22])
+# curatedList.append(myDataList[29])
+# curatedList.append(myDataList[78])
+#
+MakePlot(curatedList,"Filomena.png")
 
-MakePlot(curatedList,"Freds_Curated_List")
+# for item in curatedList:
+#     MakeSearchFile(item)
