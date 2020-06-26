@@ -107,6 +107,58 @@ tput sgr0
 if [ $MODE == "FULL" ]
 then
 sfresco < sfrescoCommands.txt
+
+sfresco <<EOF
+elastic_rRuth.search
+fix 1
+fix 3
+fix 4
+fix 5
+fix 6
+fix 7
+fix 8
+fix 9
+fix 10
+fix 11
+
+min
+migrand
+end
+
+fix 2
+step 3 1
+step 4 .01
+step 5 .01
+
+min
+migrand
+migrand
+end
+
+fix 3
+fix 4
+fix 5
+
+step 6 1
+step 7 .1
+
+min
+migrand
+end
+
+step 2 .001
+step 3 .01
+step 4 .001
+step 5 .001
+
+min
+migrand
+end
+
+plot elastic_rRuth_after.plot
+exit
+EOF
+
 elif [ $MODE == "OPTICAL" ]
 then
 sfresco < sfrescoCommands_opticalOnly.txt
@@ -136,7 +188,8 @@ tput sgr0
 if [ $MODE == "FULL" ]
 then
 python $UTILDIR/slimgrace2root.py elastic.plot elastic_after.root
-python $UTILDIR/slimgrace2root.py elastic_rRuth.plot elastic_rRuth.root
+python $UTILDIR/slimgrace2root.py elastic_rRuth.plot elastic_rRuth_before.root
+python $UTILDIR/slimgrace2root.py elastic_rRuth_after.plot elastic_rRuth_after.root
 
 elif [ $MODE == "OPTICAL" ]
 then
