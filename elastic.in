@@ -12,7 +12,7 @@ NAMELIST
 &STATES jp=0.5 bandp=1 ep=0 cpot=1 jt=0.5 bandt=1 et=0 /
 &partition /
 
-&POT kp=1 type=0 shape=0 ap=11. at=9. rc=.63  /
+&POT kp=1 type=0 shape=0 ap=11. at=9. rc=1.2  /
 &POT kp=1 type=1 V=60. vr0=1.18 a=0.6 W=32.60 wr0=1.18 aw=.6  /
 &POT kp=1 type=3 vso=5.7 rso=1.15 aso=0.7   /
 &pot /
