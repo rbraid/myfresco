@@ -1,7 +1,0 @@
-elastic_opticalOnly.search
-min
-migrand
-end
-plot elastic_opticalOnly.plot
-exit
-exit
