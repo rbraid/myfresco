@@ -3,6 +3,50 @@ import ROOT
 import argparse
 from array import array
 
+def Average(g,low,high):
+  npoints = 100
+  irange = high-low
+  rangeiter = irange/npoints
+
+  isum = 0
+  for n in range(npoints+1):
+    tmp = g.Eval(low+n*rangeiter)
+    isum += tmp
+  return isum/npoints
+
+def Blur(graph):
+  ringFile = TFile.Open("~/nuclear/mine/analysis/inputRootFiles/DumbRings.root","read")
+  if not ringFile:
+    print "Can't open RingFile"
+    return False
+  if graph.GetN() < 20:
+    print "Caution, graph has few points, maybe you are grabbing the data by mistake?"
+
+  graphName = "COM_d1_s0_Be11"
+  ringGraph = ringFile.Get(graphName)
+  if not ringGraph:
+    print "Did not find ring graph: {}".format(graphName)
+
+  XArr = array('d')
+  # XErrArr = array('d')
+  YArr = array('d')
+  # YErrArr = array('d')
+
+  for point in range(ringGraph.GetN()):
+    x = ringGraph.GetY()[point]
+    xerr = (ringGraph.GetEYhigh()[point]+ringGraph.GetEYlow()[point])/2
+    tmp = Average(graph,x-xerr,x+xerr)
+    XArr.append(x)
+    # XErrArr.append(xerr)
+    YArr.append(tmp)
+    # YErrArr.append(0)
+
+  #outGraph = TGraphErrors(len(XArr),XArr,YArr,XErrArr,YErrArr)
+  outGraph = TGraph(len(XArr),XArr,YArr)
+  outGraph.SetName(graph.GetName()+"_blurred")
+  outGraph.SetTitle(graph.GetTitle()+" blurred")
+  return outGraph
+
 def killXErr(graph):
   if not graph:
     return
@@ -81,6 +125,12 @@ def MakePlot(PlotList,name):
         MG.Add(dataPlot,"P")
         legend.AddEntry(dataPlot,"data_chiSquare("+str(int(bigInfo[0]))+")_"+plot.GetName())
 
+        blurPlot = bigInfo[-3]
+        print blurPlot.GetName()
+        blurPlot.Print()
+        MG.Add(blurPlot,"*")
+        legend.AddEntry(blurPlot,"Blurred Fresco Output")
+
     MG.Draw("AL")
     canvas.SetLogy()
     MG.GetXaxis().SetTitle("Center of Mass Angle in Degrees")
@@ -103,10 +153,10 @@ def CalcNorm(fg, dg):
 
 def MakeCSV(myList):
     csvOut = open("grabber.csv","w")
-    csvOut.write("Item Number, Chi Square, rC, V, r0, a, W\n")
+    csvOut.write("Item Number, Chi Square, rC, V, r0, a, W, rW, aW, vSO, rSO, aSO, Norm\n")
     i = 0
     for item in myList:
-        csvOut.write("{},{},{},{},{},{},{}\n".format(i,item[0],item[2],item[3],item[4],item[5],item[6]))
+        csvOut.write("{},{},{},{},{},{},{},{},{},{},{},{},{}\n".format(i,item[0],item[2],item[3],item[4],item[5],item[6],item[7],item[8],item[9],item[10],item[11], item[12]))
         i +=1
     csvOut.close()
 
@@ -139,6 +189,29 @@ def MakeCorrGraphs(bigList):
         tmpGraph.SetTitle("Correlation Check;ChiSquare;"+varName)
         tmpGraph.SetName(varName+"_vs_ChiSquare")
         tmpGraph.Write()
+
+def sfrescoPrint(index):
+    tmpItem = myDataList[index]
+    # tmpList = [chiSquare, newName, deets[1],deets[2],deets[3],deets[4],deets[5],deets[6],deets[7],deets[8],deets[9],deets[10].replace('.root',''), tmpNorm, tmpScaledDataG, tmpHisto]
+    print "sfresco"
+    print "elastic.search"
+    print "set 1 {}".format(tmpItem[12])
+    for i in range(10):
+        print "set {} {}".format(i+2, tmpItem[i+2])
+
+    for i in range(9,12):
+        print "fix {}".format(i)
+    print
+
+
+def inputLoop():
+    userInput = "default"
+    while userInput != "quit":
+        userInput = raw_input("Index to print, or quit:")
+        if userInput.lower() == "quit" or userInput.lower() == "q":
+            userInput = "quit"
+            continue
+        sfrescoPrint(int(userInput))
 
 def MakeSearchFile(myList):
         # tmpList = [chiSquare, newName, deets[1],deets[2],deets[3],deets[4],deets[5],deets[6],deets[7],deets[8],deets[9],deets[10].replace('.root',''), tmpNorm, tmpScaledDataG, tmpHisto]
@@ -203,6 +276,12 @@ myDataList = []
 
 for fileStr in myargs.files:
     deets = fileStr.split("_")
+
+    # print int(float(deets[1])*100)
+
+    if int(float(deets[1])*100) != 63:
+        continue
+
     tmpFile = TFile.Open(fileStr,"read")
     if not tmpFile:
         print "Error opening {}".format(fileStr)
@@ -215,50 +294,48 @@ for fileStr in myargs.files:
 
     outF.cd()
     # newName = "rC({})_V({})_r({})_a({})_W({})_rW({})_aW({})_Vso({})_rso({})_aso({})".format(deets[1],deets[2],deets[3],deets[4],deets[5],deets[6],deets[7],deets[8],deets[9],deets[10].replace('.root',''))
-    newName = "rC({})_V({})_r({})_a({})_W({})".format(deets[1],deets[2],deets[3],deets[4],deets[5])
+    newName = "rC({})_V({})_r({})_a({})_W({})_rW({})_aW({})".format(deets[1],deets[2],deets[3],deets[4],deets[5],deets[6],deets[7])
 
     tmpHisto.SetName(newName)
+    outF.cd()
+
     tmpHisto.Write()
 
     tmpNorm = CalcNorm(tmpHisto,dataG)
     tmpDataG = dataG.Clone("tmpDataG")
     tmpScaledDataG = ScaleTGraph(tmpDataG,tmpNorm)
     tmpScaledDataG.SetName(newName+"_data")
+    outF.cd()
+
+    tmpScaledDataG.Write()
+
+    blurG = Blur(tmpHisto)
+    outF.cd()
+    blurG.Write()
 
     func = TGraphToTF1(tmpHisto)
     chiSquare = tmpScaledDataG.Chisquare(func)
 
-    tmpList = [chiSquare, newName, deets[1],deets[2],deets[3],deets[4],deets[5],deets[6],deets[7],deets[8],deets[9],deets[10].replace('.root',''), tmpNorm, tmpScaledDataG, tmpHisto]
+    tmpList = [chiSquare, newName, deets[1],deets[2],deets[3],deets[4],deets[5],deets[6],deets[7],deets[8],deets[9],deets[10].replace('.root',''), tmpNorm, blurG, tmpScaledDataG, tmpHisto]
     myDataList.append(tmpList)
 
 myDataList.sort(key=lambda x: x[0])
+print "Read in {} files successfully.".format(len(myDataList))
+if len(myDataList) == 0:
+    quit()
 
-# MakeCSV(myDataList)
+MakeCSV(myDataList)
 
 # MakeCorrGraphs(myDataList)
 # MakePlot(myDataList,"First_Five")
 #
 curatedList = []
-#procedure: drop rC above 1.3, and below 1.1
-#drop r0 not equal to rC
-#sort by chi square and select widely varying models to compare
 
-# curatedList.append(myDataList[345]) #low V and W
-# curatedList.append(myDataList[181]) #high V and W
-# curatedList.append(myDataList[253]) #high R vals with medium potentials
-# curatedList.append(myDataList[121]) #low R vals with medium-high potentials
-# curatedList.append(myDataList[157]) # average all together
-# #didn't pay attention to a much, since we saw it had a smaller effect
-# MakePlot(curatedList,"Ryans_Curated_Five")
-#
-# #
 curatedList.append(myDataList[0])
-curatedList.append(myDataList[2])
-# curatedList.append(myDataList[22])
-# curatedList.append(myDataList[29])
-# curatedList.append(myDataList[78])
-#
-MakePlot(curatedList,"Filomena.png")
+
+MakePlot(curatedList,"Item_0")
 
 # for item in curatedList:
 #     MakeSearchFile(item)
+
+# inputLoop()
