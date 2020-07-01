@@ -48,12 +48,7 @@ sfresco < sfrescoCommands.txt
 sfresco <<EOF
 elastic_rRuth.search
 fix 1
-fix 3
-fix 4
-fix 5
-fix 6
-fix 7
-fix 8
+fix 2
 fix 9
 fix 10
 fix 11
@@ -62,32 +57,12 @@ min
 migrand
 end
 
-fix 2
-step 3 1
-step 4 .01
-step 5 .01
-
-min
-migrand
-migrand
-end
-
-fix 3
-fix 4
-fix 5
-
-step 6 1
-step 7 .1
-
-min
-migrand
-end
-
 step 2 .001
-step 3 .01
-step 4 .001
-step 5 .001
+min
+migrand
+end
 
+step 1 .00001
 min
 migrand
 end
