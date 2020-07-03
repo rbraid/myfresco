@@ -126,8 +126,8 @@ def MakePlot(PlotList,name):
         legend.AddEntry(dataPlot,"data_chiSquare("+str(int(bigInfo[0]))+")_"+plot.GetName())
 
         blurPlot = bigInfo[-3]
-        print blurPlot.GetName()
-        blurPlot.Print()
+        # print blurPlot.GetName()
+        # blurPlot.Print()
         MG.Add(blurPlot,"*")
         legend.AddEntry(blurPlot,"Blurred Fresco Output")
 
@@ -207,7 +207,7 @@ def sfrescoPrint(index):
 def inputLoop():
     userInput = "default"
     while userInput != "quit":
-        userInput = raw_input("Index to print, or quit:")
+        userInput = raw_input("Index to print, or quit: ")
         if userInput.lower() == "quit" or userInput.lower() == "q":
             userInput = "quit"
             continue
@@ -244,6 +244,24 @@ def MakeSearchFile(myList):
     searchOut.write(" 69.4898614779  2681.64788421  438.702489556\n")
     searchOut.write("&\n")
 
+def FindCorrPoint(g, val):
+    for testPoint in range(g.GetN()):
+        if int(g.GetX()[testPoint]*1000) == int(val*1000):
+            return testPoint
+    return False
+
+def GraphsChiSquare(dataG, frescoG):
+    chiSquare = 0
+    for point in range(dataG.GetN()):
+        corrPoint = FindCorrPoint(frescoG, dataG.GetX()[point])
+        if not corrPoint:
+            print "Didn't find a correlated point for dataG X: {}".format(dataG.GetX()[point])
+            continue
+        Obs = dataG.GetY()[point]
+        Exp = frescoG.GetY()[corrPoint]
+	    chiSquare += TMath.Power( Obs - Exp , 2.)/Exp
+
+    return chiSquare
 
 
 parser = argparse.ArgumentParser()
@@ -316,6 +334,8 @@ for fileStr in myargs.files:
     func = TGraphToTF1(tmpHisto)
     chiSquare = tmpScaledDataG.Chisquare(func)
 
+    newChiSquare =
+
     tmpList = [chiSquare, newName, deets[1],deets[2],deets[3],deets[4],deets[5],deets[6],deets[7],deets[8],deets[9],deets[10].replace('.root',''), tmpNorm, blurG, tmpScaledDataG, tmpHisto]
     myDataList.append(tmpList)
 
@@ -338,4 +358,4 @@ MakePlot(curatedList,"Item_0")
 # for item in curatedList:
 #     MakeSearchFile(item)
 
-# inputLoop()
+inputLoop()
