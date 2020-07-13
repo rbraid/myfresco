@@ -1,4 +1,4 @@
-from ROOT import TFile, TGraph, TF1, TCanvas, TMultiGraph, TGraphErrors
+from ROOT import TFile, TGraph, TF1, TCanvas, TMultiGraph, TGraphErrors, TMath
 import ROOT
 import argparse
 from array import array
@@ -70,13 +70,68 @@ def killXErr(graph):
   #tmpG.Write()
   return tmpG
 
+def MovingAverageBlur(graph):
+    debug = False
+    # 2.937 for ring 1, 2.955 for ring 5, 3.18 for ring 10
+    thetaRes = 3 #this is sigma
+    nSigma = 1 #Gives 95.45%
+
+    if debug:
+        print graph.GetName()
+        graph.Print()
+
+    blurXArr = array('d')
+    blurYArr = array('d')
+
+    for centerPoint in range(graph.GetN()):
+        centerTheta = graph.GetX()[centerPoint]
+        lowerPoint = centerPoint - (thetaRes * nSigma)
+        upperPoint = centerPoint + (thetaRes * nSigma)
+        if debug:
+            print "Points: {} - {} - {}".format(lowerPoint, centerPoint, upperPoint)
+
+        if lowerPoint < 0:
+            if debug:
+                print "kill centerPoint: {} due to lowerPoint: {} min: 0".format(centerPoint, lowerPoint)
+            continue
+        elif upperPoint > 175:
+            if debug:
+                print "kill centerPoint: {} due to upperPoint: {} max: 175".format(centerPoint, upperPoint)
+            continue
+
+        sum = 0
+        if debug:
+            print "sub range {} to {} degrees".format(graph.GetX()[lowerPoint], graph.GetX()[upperPoint])
+        for sumPoint in range(lowerPoint,upperPoint):
+            sum += graph.GetY()[sumPoint]
+        avg = sum / (upperPoint-lowerPoint)
+        if debug:
+            print "average for {} degrees: {}".format(centerTheta,avg)
+
+        blurXArr.append(centerTheta)
+        blurYArr.append(avg)
+
+    retGraph = TGraph(len(blurXArr),blurXArr,blurYArr)
+    retGraph.SetName("retGraph")
+    if debug:
+        print retGraph.GetName()
+        retGraph.Print()
+        print "\n"
+    return retGraph
+
 def graphFunc(x):
    return tmpHisto.Eval(x[0]);
+
+def moveFunc(x):
+   return tmpBlur.Eval(x[0]);
 
 def TGraphToTF1(graph):
     xmin = graph.GetX()[0]
     xmax = graph.GetX()[graph.GetN()-1]
-    f = TF1("f", graphFunc, xmin, xmax)
+    if "_moving" in graph.GetName():
+        f = TF1("f", moveFunc, xmin, xmax)
+    else:
+        f = TF1("f", graphFunc, xmin, xmax)
     return f
 
 def ScaleTGraph(graph,scalefactor):
@@ -108,12 +163,15 @@ def MakePlot(PlotList,name):
     # legend.AddEntry(dataG,"Data")
     i=2
     for bigInfo, color in Zipper:
+        if len(Zipper) == 1:
+            color = ROOT.kBlack
         plot = bigInfo[-1]
         plot.SetMarkerColor(ROOT.kWhite)
         plot.SetLineColor(color)
         plot.SetFillColor(ROOT.kWhite)
         plot.SetLineWidth(2)
-        plot.SetLineStyle(i)
+        if len(Zipper) > 1:
+            plot.SetLineStyle(i)
         i += 1
         MG.Add(plot,"L")
         legend.AddEntry(plot,"chiSquare("+str(int(bigInfo[0]))+")_"+plot.GetName())
@@ -125,11 +183,17 @@ def MakePlot(PlotList,name):
         MG.Add(dataPlot,"P")
         legend.AddEntry(dataPlot,"data_chiSquare("+str(int(bigInfo[0]))+")_"+plot.GetName())
 
-        blurPlot = bigInfo[-3]
-        # print blurPlot.GetName()
-        # blurPlot.Print()
-        MG.Add(blurPlot,"*")
-        legend.AddEntry(blurPlot,"Blurred Fresco Output")
+
+        if len(PlotList) < 4:
+            blurPlot = bigInfo[-3]
+            blurPlot.SetMarkerColor(color)
+            blurPlot.SetLineColor(color)
+            blurPlot.SetLineStyle(2)
+            blurPlot.SetLineWidth(2)
+            blurPlot.SetFillColor(ROOT.kWhite)        # print blurPlot.GetName()
+            # blurPlot.Print()
+            MG.Add(blurPlot,"L")
+            legend.AddEntry(blurPlot,"Blurred Fresco Output")
 
     MG.Draw("AL")
     canvas.SetLogy()
@@ -152,11 +216,11 @@ def CalcNorm(fg, dg):
   return fresY/datY
 
 def MakeCSV(myList):
-    csvOut = open("grabber.csv","w")
-    csvOut.write("Item Number, Chi Square, rC, V, r0, a, W, rW, aW, vSO, rSO, aSO, Norm\n")
+    csvOut = open("Sorted_Grid_Search.csv","w")
+    csvOut.write("Item Number, Chi Square, rC, V, r0, a, W, rW, aW, vSO, rSO, aSO, Norm, BlurChiSquare\n")
     i = 0
     for item in myList:
-        csvOut.write("{},{},{},{},{},{},{},{},{},{},{},{},{}\n".format(i,item[0],item[2],item[3],item[4],item[5],item[6],item[7],item[8],item[9],item[10],item[11], item[12]))
+        csvOut.write("{},{},{},{},{},{},{},{},{},{},{},{},{},{}\n".format(i,item[0],item[2],item[3],item[4],item[5],item[6],item[7],item[8],item[9],item[10],item[11], item[12], item[13]))
         i +=1
     csvOut.close()
 
@@ -193,14 +257,24 @@ def MakeCorrGraphs(bigList):
 def sfrescoPrint(index):
     tmpItem = myDataList[index]
     # tmpList = [chiSquare, newName, deets[1],deets[2],deets[3],deets[4],deets[5],deets[6],deets[7],deets[8],deets[9],deets[10].replace('.root',''), tmpNorm, tmpScaledDataG, tmpHisto]
-    print "sfresco"
     print "elastic.search"
     print "set 1 {}".format(tmpItem[12])
     for i in range(10):
         print "set {} {}".format(i+2, tmpItem[i+2])
 
+    print "fix 1"
+    print "fix 2"
+    print "fix 3"
     for i in range(9,12):
         print "fix {}".format(i)
+
+    print "q"
+
+    print "min"
+    print "migrand"
+    print "end"
+    print "plot index_{}.plot".format(index)
+    print "exit"
     print
 
 
@@ -259,7 +333,7 @@ def GraphsChiSquare(dataG, frescoG):
             continue
         Obs = dataG.GetY()[point]
         Exp = frescoG.GetY()[corrPoint]
-	    chiSquare += TMath.Power( Obs - Exp , 2.)/Exp
+        chiSquare += TMath.Power( Obs - Exp , 2.)/Exp
 
     return chiSquare
 
@@ -319,6 +393,10 @@ for fileStr in myargs.files:
 
     tmpHisto.Write()
 
+    tmpBlur = MovingAverageBlur(tmpHisto)
+    tmpBlur.SetName(newName+"_moving")
+    tmpBlur.Write()
+
     tmpNorm = CalcNorm(tmpHisto,dataG)
     tmpDataG = dataG.Clone("tmpDataG")
     tmpScaledDataG = ScaleTGraph(tmpDataG,tmpNorm)
@@ -327,20 +405,24 @@ for fileStr in myargs.files:
 
     tmpScaledDataG.Write()
 
-    blurG = Blur(tmpHisto)
-    outF.cd()
-    blurG.Write()
+    # blurG = Blur(tmpHisto)
+    # outF.cd()
+    # blurG.Write()
 
     func = TGraphToTF1(tmpHisto)
     chiSquare = tmpScaledDataG.Chisquare(func)
 
-    newChiSquare =
+    funcBlur = TGraphToTF1(tmpBlur)
+    noErrScaledGraph = killXErr(tmpScaledDataG)
+    newChiSquare = noErrScaledGraph.Chisquare(funcBlur)
 
-    tmpList = [chiSquare, newName, deets[1],deets[2],deets[3],deets[4],deets[5],deets[6],deets[7],deets[8],deets[9],deets[10].replace('.root',''), tmpNorm, blurG, tmpScaledDataG, tmpHisto]
+    # newChiSquare = GraphsChiSquare(tmpScaledDataG, blurG)
+
+    tmpList = [chiSquare, newName, deets[1],deets[2],deets[3],deets[4],deets[5],deets[6],deets[7],deets[8],deets[9],deets[10].replace('.root',''), tmpNorm, newChiSquare,  tmpBlur, tmpScaledDataG, tmpHisto]
     myDataList.append(tmpList)
 
-myDataList.sort(key=lambda x: x[0])
-print "Read in {} files successfully.".format(len(myDataList))
+myDataList.sort(key=lambda x: x[13])
+# print "Read in {} files successfully.".format(len(myDataList))
 if len(myDataList) == 0:
     quit()
 
@@ -349,13 +431,19 @@ MakeCSV(myDataList)
 # MakeCorrGraphs(myDataList)
 # MakePlot(myDataList,"First_Five")
 #
-curatedList = []
 
-curatedList.append(myDataList[0])
+IndexList = [0]
 
-MakePlot(curatedList,"Item_0")
+for index in IndexList:
+    curatedList = []
+    curatedList.append(myDataList[index])
+    MakePlot(curatedList,"Index_{}".format(index))
+
+    sfrescoPrint(index)
+
+
 
 # for item in curatedList:
 #     MakeSearchFile(item)
 
-inputLoop()
+# inputLoop()
