@@ -2,6 +2,10 @@
 
 STRINGS="$1_$2_$3_$4_$5_$6_$7_$8_$9_${10}"
 
+if [ -d "work/dir_$STRINGS" ]
+then
+  exit 1
+fi
 mkdir "work/dir_$STRINGS"
 cd "work/dir_$STRINGS"
 
