@@ -25,8 +25,7 @@ NAMELIST
 &partition /
 
 &POT kp=1 type=0 shape=0 ap=11. at=9. rc=$1  /
-&POT kp=1 type=1 V=$2 vr0=$3  a=$4 /
-&POT kp=1 type=2 W=$5  wr0=$6 aw=$7  /
+&POT kp=1 type=1 V=$2 vr0=$3  a=$4 W=$5  wr0=$6 aw=$7  /
 &POT kp=1 type=3 vso=$8 rso=$9 aso=${10}   /
 &pot /
 
