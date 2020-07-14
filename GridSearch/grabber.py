@@ -205,7 +205,7 @@ def MakePlot(PlotList,name):
     outF.cd()
     MG.Write()
 
-    canvas.SaveAs("{}.png".format(name))
+    canvas.SaveAs("pngs/{}.png".format(name))
 
 def CalcNorm(fg, dg):
   datY = dg.GetY()[0]
@@ -217,7 +217,7 @@ def CalcNorm(fg, dg):
 
 def MakeCSV(myList):
     csvOut = open("Sorted_Grid_Search.csv","w")
-    csvOut.write("Item Number, Chi Square, rC, V, r0, a, W, rW, aW, vSO, rSO, aSO, Norm, BlurChiSquare\n")
+    csvOut.write("Item Number,Chi Square,rC,V,r0,a,W,rW,aW,vSO,rSO,aSO,Norm,BlurChiSquare\n")
     i = 0
     for item in myList:
         csvOut.write("{},{},{},{},{},{},{},{},{},{},{},{},{},{}\n".format(i,item[0],item[2],item[3],item[4],item[5],item[6],item[7],item[8],item[9],item[10],item[11], item[12], item[13]))
@@ -432,14 +432,14 @@ MakeCSV(myDataList)
 # MakePlot(myDataList,"First_Five")
 #
 
-IndexList = [0]
+IndexList = [0] #range(0,40)
 
 for index in IndexList:
     curatedList = []
     curatedList.append(myDataList[index])
     MakePlot(curatedList,"Index_{}".format(index))
 
-    sfrescoPrint(index)
+    # sfrescoPrint(index)
 
 
 
