@@ -43,44 +43,44 @@ tput setaf 2
 echo -e "Beinning to run sfresco"
 tput sgr0
 
-sfresco < sfrescoCommands.txt
+# sfresco < sfrescoCommands.txt
+#
+# sfresco <<EOF
+# elastic_rRuth.search
+# fix 1
+# fix 2
+# fix 9
+# fix 10
+# fix 11
+#
+# min
+# migrand
+# end
+#
+# step 2 .001
+# min
+# migrand
+# end
+#
+# step 1 .00001
+# min
+# migrand
+# end
+#
+# plot elastic_rRuth_after.plot
+# exit
+# EOF
+#
+# echo
+# echo
+#
+# tput setaf 2
+# echo -e "Beinning to convert sfresco output to ROOT"
+# tput sgr0
 
-sfresco <<EOF
-elastic_rRuth.search
-fix 1
-fix 2
-fix 9
-fix 10
-fix 11
-
-min
-migrand
-end
-
-step 2 .001
-min
-migrand
-end
-
-step 1 .00001
-min
-migrand
-end
-
-plot elastic_rRuth_after.plot
-exit
-EOF
-
-echo
-echo
-
-tput setaf 2
-echo -e "Beinning to convert sfresco output to ROOT"
-tput sgr0
-
-python $UTILDIR/slimgrace2root.py elastic.plot elastic_after.root
+# python $UTILDIR/slimgrace2root.py elastic.plot elastic_after.root
 python $UTILDIR/slimgrace2root.py elastic_rRuth.plot elastic_rRuth_before.root
-python $UTILDIR/slimgrace2root.py elastic_rRuth_after.plot elastic_rRuth_after.root
+# python $UTILDIR/slimgrace2root.py elastic_rRuth_after.plot elastic_rRuth_after.root
 
 echo
 

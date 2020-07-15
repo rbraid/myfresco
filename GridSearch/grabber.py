@@ -432,16 +432,18 @@ MakeCSV(myDataList)
 # MakePlot(myDataList,"First_Five")
 #
 
-IndexList = [0] #range(0,40)
+IndexList = [356] #range(0,40)
+curatedList = []
 
 for index in IndexList:
-    curatedList = []
+    tmpList = []
+    tmpList.append(myDataList[index])
     curatedList.append(myDataList[index])
-    MakePlot(curatedList,"Index_{}".format(index))
+    MakePlot(tmpList,"Index_{}".format(index))
 
     # sfrescoPrint(index)
 
-
+# MakePlot(curatedList,"All_3")
 
 # for item in curatedList:
 #     MakeSearchFile(item)
