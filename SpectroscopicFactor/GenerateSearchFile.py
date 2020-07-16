@@ -39,8 +39,8 @@ outfile.write("'transfer.in' 'transfer.frout'\n")#first line is the original fre
 outfile.write('1 ')#print number of variables
 outfile.write('1\n')#number of experimental data sets.  ...
 
-outfile.write(" &variable kind=2 name='{}SpecFactor' nafrac={} afrac=.5/\n".format(args.Mode,dataPointer))
-outfile.write(" &data idir=0 lab=F abserr=T idir=0 iscale=2 ic=2 ia={}/\n".format(dataPointer))
+outfile.write(" &variable kind=2 name='{}SpecFactor' nafrac={} afrac=.001/\n".format(args.Mode,dataPointer))
+outfile.write(" &data idir=0 lab=F abserr=T iscale=2 ic=2 ia={}/\n".format(dataPointer))
 # dataPlot = ScaleTGraph(dataPlot)
 WriteGraph(dataPlot)
 outfile.write("&\n")
