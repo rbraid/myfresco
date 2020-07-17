@@ -34,7 +34,8 @@ NAMELIST
 &POT kp=3 type=1 shape=0 V=37.4 vr0=1.23 a=0.60 /
 &POT kp=3 type=3 vso=7. rso=1.23 aso=0.6   /
 
-&POT kp=4 type=0 shape=0 ap=0. at=11. rc=.63  /
+# n + 10Be
+&POT kp=4 type=0 shape=0 ap=0. at=10. rc=1.2  /
 &POT kp=4 type=1 V=58. vr0=1.4 a=0.9 /
 &POT kp=4 type=3 vso=5.7 rso=1.15 aso=0.7   /
 &pot /
@@ -46,8 +47,8 @@ NAMELIST
 &overlap /
 
 &COUPLING icto=-2 icfrom=1 kind=7 ip1=1 ip2=0 /
-&CFP in=1 ia=1 ib=1 kn=1 a=1.41421356237 /
-&CFP in=2 ia=1 ib=2 kn=2 a=1.41421356237 /
-&CFP in=2 ia=1 ib=3 kn=3 a=1.41421356237 /
-&CFP in=2 ia=1 ib=4 kn=4 a=1.41421356237 /
+&CFP in=1 ia=1 ib=1 kn=1 a=1. /
+&CFP in=2 ia=1 ib=2 kn=2 a=1. /
+&CFP in=2 ia=1 ib=3 kn=3 a=1. /
+&CFP in=2 ia=1 ib=4 kn=4 a=2. /
 &coupling /
