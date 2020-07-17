@@ -36,8 +36,8 @@ NAMELIST
 
 # n + 10Be
 &POT kp=4 type=0 shape=0 ap=0. at=10. rc=1.2  /
-&POT kp=4 type=1 V=58. vr0=1.4 a=0.9 /
-&POT kp=4 type=3 vso=5.7 rso=1.15 aso=0.7   /
+&POT kp=4 type=1 V=37.4. vr0=1.12 a=0.6 /
+&POT kp=4 type=3 vso=7. rso=1.23 aso=0.6   /
 &pot /
 
 &OVERLAP kn1=1 ic1=1 ic2=2 in=1 kind=0 nn=2 l=0 j=0.5 sn=0.5 kbpot=4 be=0.501 isc=1 ipc=0 /
