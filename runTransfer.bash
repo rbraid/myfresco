@@ -41,6 +41,7 @@ ${MODE}.search
 
 min
 migrand
+migrand
 end
 
 plot ${MODE}.plot
