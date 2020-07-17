@@ -69,7 +69,7 @@ python SpectroscopicFactor/printResults.py ${MODE}_sfresco.out
 tput setaf 2
 echo -e "Generating pngs"
 tput sgr0
-python SpectroscopicFactor/DrawSpectroscopics.py ${MODE}
+python SpectroscopicFactor/DrawSpectroscopics.py ${MODE} False
 echo
 done
 
