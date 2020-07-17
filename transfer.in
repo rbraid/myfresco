@@ -35,8 +35,8 @@ NAMELIST
 &POT kp=3 type=3 vso=7. rso=1.23 aso=0.6   /
 
 # n + 10Be
-&POT kp=4 type=0 shape=0 ap=0. at=10. rc=1.2  /
-&POT kp=4 type=1 V=37.4. vr0=1.12 a=0.6 /
+&POT kp=4 type=0 shape=0 ap=0. at=10.0 rc=1.2 /
+&POT kp=4 type=1 shape=0 V=37.4 vr0=1.23 a=0.60 /
 &POT kp=4 type=3 vso=7. rso=1.23 aso=0.6   /
 &pot /
 
