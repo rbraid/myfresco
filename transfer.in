@@ -12,9 +12,9 @@ NAMELIST
 
 &PARTITION namep='10Be_BeamLike' massp=10.01353455 zp=4 namet='10Be_TargetLike' masst=10.01353455 zt=4 nex=4 qval=6.31 /
 &STATES jp=0 bandp= 1 ep=0       cpot=2 jt=0 bandt= 1 et=0 /
+&STATES copyp = 1                cpot=2 jt=2 bandt= 1 et=5.958 /
 &STATES copyp = 1                cpot=2 jt=1 bandt=-1 et=5.959 /
 &STATES copyp = 1                cpot=2 jt=2 bandt=-1 et=6.263 /
-&STATES copyp = 1                cpot=2 jt=2 bandt= 1 et=5.958 /
 &partition /
 
 &POT kp=1 type=0 shape=0 ap=11. at=9. rc=.63  /
@@ -41,14 +41,14 @@ NAMELIST
 &pot /
 
 &OVERLAP kn1=1 ic1=1 ic2=2 in=1 kind=0 nn=2 l=0 j=0.5 sn=0.5 kbpot=4 be=0.501 isc=1 ipc=0 /
-&OVERLAP kn1=2 ic1=1 ic2=2 in=2 kind=3 ia=1 ib=2 nn=2 l=0 j=0.5 sn=0.5 kbpot=3 be=.853 isc=1 ipc=0 /
-&OVERLAP kn1=3 ic1=1 ic2=2 in=2 kind=3 ia=1 ib=3 nn=2 l=0 j=0.5 sn=0.5 kbpot=3 be=.549 isc=1 ipc=0 /
-&OVERLAP kn1=4 kn2=5 ic1=1 ic2=2 in=2 kind=3 ia=1 ib=4 nn=1 l=1 j=1.5 sn=0.5 kbpot=3 be=.854 isc=1 ipc=0 /
+&OVERLAP kn1=2 kn2=3 ic1=1 ic2=2 in=2 kind=3 ia=1 ib=2 nn=1 l=1 j=1.5 sn=0.5 kbpot=3 be=.854 isc=1 ipc=0 /
+&OVERLAP kn1=4 ic1=1 ic2=2 in=2 kind=3 ia=1 ib=3 nn=2 l=0 j=0.5 sn=0.5 kbpot=3 be=.853 isc=1 ipc=0 /
+&OVERLAP kn1=5 ic1=1 ic2=2 in=2 kind=3 ia=1 ib=4 nn=2 l=0 j=0.5 sn=0.5 kbpot=3 be=.549 isc=1 ipc=0 /
 &overlap /
 
 &COUPLING icto=-2 icfrom=1 kind=7 ip1=1 ip2=0 /
 &CFP in=1 ia=1 ib=1 kn=1 a=1. /
-&CFP in=2 ia=1 ib=2 kn=2 a=1. /
-&CFP in=2 ia=1 ib=3 kn=3 a=1. /
-&CFP in=2 ia=1 ib=4 kn=4 a=2. /
+&CFP in=2 ia=1 ib=2 kn=2 a=2. /
+&CFP in=2 ia=1 ib=3 kn=4 a=1. /
+&CFP in=2 ia=1 ib=4 kn=5 a=1. /
 &coupling /

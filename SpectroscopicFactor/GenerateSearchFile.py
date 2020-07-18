@@ -23,11 +23,11 @@ if not dataF:
 dataPointer = -1
 
 if args.Mode == "oneMinus":
-  dataPointer = 2
-elif args.Mode == "twoMinus":
   dataPointer = 3
-elif args.Mode == "twoPlus":
+elif args.Mode == "twoMinus":
   dataPointer = 4
+elif args.Mode == "twoPlus":
+  dataPointer = 2
 
 dataPlot = dataF.Get(args.Mode+"Graph")
 if not dataPlot:
@@ -39,7 +39,10 @@ outfile.write("'transfer.in' 'transfer.frout'\n")#first line is the original fre
 outfile.write('1 ')#print number of variables
 outfile.write('1\n')#number of experimental data sets.  ...
 
-outfile.write(" &variable kind=2 name='{}SpecFactor' nafrac={} afrac=.001/\n".format(args.Mode,dataPointer))
+#ia is the excitation pair number aka index of card 7.  card 7 is the states aka partition
+#nfrac is the odrer of card 17.  Card 17 is the spectroscopic amplutudes aka my couplings
+
+outfile.write(" &variable kind=2 name='{}SpecFactor' nafrac={} afrac=1/\n".format(args.Mode,dataPointer))
 outfile.write(" &data idir=0 lab=F abserr=T iscale=2 ic=2 ia={}/\n".format(dataPointer))
 # dataPlot = ScaleTGraph(dataPlot)
 WriteGraph(dataPlot)

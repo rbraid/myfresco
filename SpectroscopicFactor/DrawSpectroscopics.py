@@ -27,13 +27,13 @@ dataPointer = -1
 gColor = ROOT.kBlack
 
 if args.Mode == "oneMinus":
-  dataPointer = 2
+  dataPointer = 3
   gColor = ROOT.kRed
 elif args.Mode == "twoMinus":
-  dataPointer = 3
+  dataPointer = 4
   gColor = ROOT.kBlue
 elif args.Mode == "twoPlus":
-  dataPointer = 4
+  dataPointer = 2
   gColor = ROOT.kGreen
 
 sfrescoF = TFile.Open("{}.root".format(args.Mode),"read")
