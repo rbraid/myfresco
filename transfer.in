@@ -24,7 +24,7 @@ NAMELIST
 # outgoing scattering 10Be+10Be (kp=2)
 # derived from 12C+10Be elastic scattering at 23.2 MeV
 # https://journals.aps.org/prc/pdf/10.1103/PhysRevC.84.034611 SEE WS-3
-&POT kp=2 type=0 shape=0 ap=10. at=0. rc=.63  /
+&POT kp=2 type=0 shape=0 ap=10. at=10. rc=.63  /
 &POT kp=2 type=1 V=60. vr0=1.18  a=0.6 w=32.6 rw=1.18 aw=.6  /
 &POT kp=2 type=3 vso=5.7 rso=1.15 aso=0.7   /
 
